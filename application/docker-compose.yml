@@ -1,24 +1,24 @@
 version: "3.3"
 services:
   db:
-    image: postgres
+    image: postgres:latest
     container_name: pa5a-db
-    #environment:
+    environment:
       #POSTGRES_PASSWORD:
-      # POSTGRES_USER:
-      # POSTGRES_DB:
-    #volumes:
-    #  - /root/data/postgresql:/var/lib/postgresql/data
+      POSTGRES_USER: postgres
+      POSTGRES_DB: pa5a
+    volumes:
+      - /var/www/postgresql:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   web:
-    image: node
+    image: node:14.16.0-alpine3.10
     container_name: pa5a-web
     depends_on:
       - db
     working_dir: /app
     volumes:
-      - ./application:/app
+      - ./:/app
     command: sh -c "npm install && npm run watch"
     ports:
       - "80:80"
