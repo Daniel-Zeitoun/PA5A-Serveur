@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  db:
+    image: postgres
+		container_name: pa5a-db
+    environment:
+      POSTGRES_PASSWORD: PA5A-2021
+      POSTGRES_USER: postgres
+      POSTGRES_DB: pa5a
+    volumes:
+      - /root/data/postgresql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  web:
+    image: node
+		container_name: pa5a-web
+    depends_on:
+      - db
+    volumes:
+      - /root/data/node:/var/www/html
+    ports:
+      - "80:80"
+
