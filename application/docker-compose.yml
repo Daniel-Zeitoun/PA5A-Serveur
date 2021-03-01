@@ -3,10 +3,10 @@ services:
   db:
     image: postgres
     container_name: pa5a-db
-    environment:
-      POSTGRES_PASSWORD: PA5A-2021
-      POSTGRES_USER: postgres
-      POSTGRES_DB: pa5a
+    #environment:
+      #POSTGRES_PASSWORD:
+      # POSTGRES_USER:
+      # POSTGRES_DB:
     #volumes:
     #  - /root/data/postgresql:/var/lib/postgresql/data
     ports:
