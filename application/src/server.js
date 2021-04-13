@@ -1,17 +1,29 @@
 'use strict'
 
-const express = require("express")
-const path = require("path")
-const api = require("./controllers/api")
+const express = require('express')
+const path = require('path')
+const api = require('./controllers/api')
+const front = require('./controllers/front')
 
 const app = express()
 const port = 80
+const rootDir = path.resolve(__dirname)
 
 for (const [key, value] of Object.entries({
-    "x-powered-by": false
+    'view engine': 'ejs',
+    'views': path.resolve(rootDir, 'views'),
+    'x-powered-by': false
 })) app.set(key, value)
 
-app.use("/api", api)
+for (const [key, value] of Object.entries({
+    '/api': api,
+    '/app': front,
+    '/static': express.static(path.join(rootDir, 'static'))
+})) app.use(key, value)
+
+app.get('*', (req, res) => {
+    res.status(302).redirect('/app')
+})
 
 app.listen(port, () => {
     console.log(`Express server is listening on port ${port}`)

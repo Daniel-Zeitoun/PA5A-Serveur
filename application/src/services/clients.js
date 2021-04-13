@@ -16,13 +16,13 @@ module.exports = {
     create: function () {
         return {
             id: 1,
-            name: "bonjour",
+            name: 'bonjour',
         }
     },
     update: function () {
         return {
             id: 1,
-            name: "bonsoir"
+            name: 'bonsoir'
         }
     }
 }
