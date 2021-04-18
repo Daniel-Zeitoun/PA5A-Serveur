@@ -2,17 +2,18 @@
 
 const { Model, DataTypes } = require('sequelize')
 
-class Log extends Model { }
+class Logs extends Model { }
 
-Log.initialize = function (sequelize) {
-    Log.init({
+Logs.initialize = function (sequelize) {
+    Logs.init({
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+        clientId: { type: DataTypes.INTEGER, allowNull: false, unique: false },
         jsonData: { type: DataTypes.JSON, allowNull: true, unique: false }
     },
         {
             sequelize,
-            modelName: 'Log'
+            modelName: 'Logs'
         })
 }
 
-module.exports = Log
+module.exports = Logs

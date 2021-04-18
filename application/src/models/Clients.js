@@ -2,10 +2,10 @@
 
 const { Model, DataTypes } = require('sequelize')
 
-class Client extends Model { }
+class Clients extends Model { }
 
-Client.initialize = function (sequelize) {
-    Client.init({
+Clients.initialize = function (sequelize) {
+    Clients.init({
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
         uuid: { type: DataTypes.UUID, allowNull: false, unique: true },
         pcName: { type: DataTypes.TEXT, allowNull: false, unique: false },
@@ -14,8 +14,8 @@ Client.initialize = function (sequelize) {
     },
         {
             sequelize,
-            modelName: 'Client'
+            modelName: 'Clients'
         })
 }
 
-module.exports = Client
+module.exports = Clients
