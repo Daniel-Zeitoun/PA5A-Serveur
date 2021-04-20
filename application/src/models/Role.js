@@ -2,17 +2,24 @@
 
 const { Model, DataTypes } = require('sequelize')
 
-class Roles extends Model { }
+class Role extends Model { }
 
-Roles.initialize = function (sequelize) {
-    Roles.init({
+Role.initialize = function (sequelize) {
+    Role.init({
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
         userType: { type: DataTypes.TEXT, allowNull: false, unique: true }
     },
         {
             sequelize,
-            modelName: 'Roles'
+            modelName: 'Role'
         })
 }
 
-module.exports = Roles
+Role.associate = function (models) {
+    
+    Role.hasMany(models.User, {
+        foreignKey: 'role'
+    })
+}
+
+module.exports = Role

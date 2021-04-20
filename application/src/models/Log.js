@@ -2,18 +2,25 @@
 
 const { Model, DataTypes } = require('sequelize')
 
-class Logs extends Model { }
+class Log extends Model { }
 
-Logs.initialize = function (sequelize) {
-    Logs.init({
+Log.initialize = function (sequelize) {
+    Log.init({
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
         clientId: { type: DataTypes.INTEGER, allowNull: false, unique: false },
         jsonData: { type: DataTypes.JSON, allowNull: true, unique: false }
     },
         {
             sequelize,
-            modelName: 'Logs'
+            modelName: 'Log'
         })
 }
 
-module.exports = Logs
+Log.associate = function (models) {
+    
+    Log.belongsTo(models.Client, {
+        foreignKey: 'clientId'
+    })
+}
+
+module.exports = Log

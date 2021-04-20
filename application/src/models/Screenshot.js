@@ -2,10 +2,10 @@
 
 const { Model, DataTypes } = require('sequelize')
 
-class Screenshots extends Model { }
+class Screenshot extends Model { }
 
-Screenshots.initialize = function (sequelize) {
-    Screenshots.init({
+Screenshot.initialize = function (sequelize) {
+    Screenshot.init({
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
         clientId: { type: DataTypes.INTEGER, allowNull: false, unique: false },
         filename: { type: DataTypes.TEXT, allowNull: false, unique: true },
@@ -13,8 +13,15 @@ Screenshots.initialize = function (sequelize) {
     },
         {
             sequelize,
-            modelName: 'Screenshots'
+            modelName: 'Screenshot'
         })
 }
 
-module.exports = Screenshots
+Screenshot.associate = function (models) {
+    
+    Screenshot.belongsTo(models.Client, {
+        foreignKey: 'clientId'
+    })
+}
+
+module.exports = Screenshot

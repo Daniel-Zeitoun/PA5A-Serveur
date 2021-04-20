@@ -2,10 +2,10 @@
 
 const { Model, DataTypes } = require('sequelize')
 
-class IP_Addresses extends Model { }
+class IP_Address extends Model { }
 
-IP_Addresses.initialize = function (sequelize) {
-    IP_Addresses.init({
+IP_Address.initialize = function (sequelize) {
+    IP_Address.init({
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
         clientId: { type: DataTypes.INTEGER, allowNull: false, unique: false },
         firstPingDate: { type: DataTypes.DATE, allowNull: false, unique: false },
@@ -15,8 +15,15 @@ IP_Addresses.initialize = function (sequelize) {
     },
         {
             sequelize,
-            modelName: 'IP_Addresses'
+            modelName: 'IP_Address'
         })
 }
 
-module.exports = IP_Addresses
+IP_Address.associate = function (models) {
+    
+    IP_Address.belongsTo(models.Client, {
+        foreignKey: 'clientId'
+    })
+}
+
+module.exports = IP_Address

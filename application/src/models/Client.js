@@ -2,10 +2,10 @@
 
 const { Model, DataTypes } = require('sequelize')
 
-class Clients extends Model { }
+class Client extends Model { }
 
-Clients.initialize = function (sequelize) {
-    Clients.init({
+Client.initialize = function (sequelize) {
+    Client.init({
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
         uuid: { type: DataTypes.UUID, allowNull: false, unique: true },
         pcName: { type: DataTypes.TEXT, allowNull: false, unique: false },
@@ -14,8 +14,23 @@ Clients.initialize = function (sequelize) {
     },
         {
             sequelize,
-            modelName: 'Clients'
+            modelName: 'Client'
         })
 }
 
-module.exports = Clients
+Client.associate = function (models) {
+    
+    Client.hasMany(models.IP_Address, {
+        foreignKey: 'clientId'
+    })
+
+    Client.hasMany(models.Log, {
+        foreignKey: 'clientId'
+    })
+
+    Client.hasMany(models.Screenshot, {
+        foreignKey: 'clientId'
+    })
+}
+
+module.exports = Client
