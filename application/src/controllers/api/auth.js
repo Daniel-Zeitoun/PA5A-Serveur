@@ -22,7 +22,6 @@ router.post('/login', jsonParser(), (req, res, next) => {
                 res.status(204).end()
             })
         })
-
         .catch(next)
 })
 

