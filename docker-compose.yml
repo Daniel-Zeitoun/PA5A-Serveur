@@ -1,5 +1,6 @@
 version: "3.3"
 services:
+
   db:
     image: postgres:latest
     container_name: pa5a-db
@@ -8,7 +9,8 @@ services:
       POSTGRES_DB: pa5a
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pa5a
-    #volumes:
+    volumes:
+      - ./application/database:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   web:
@@ -17,6 +19,8 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+    links:
+      - "db:database"
     working_dir: /app
     volumes:
       - ./application:/app

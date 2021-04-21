@@ -10,7 +10,7 @@ const User = require('../models/User')
 
 const databaseLoader = async () => {
 
-    const models = [ 
+    const models = [
         Client,
         IP_Address,
         Log,
@@ -25,8 +25,8 @@ const databaseLoader = async () => {
 
     for (const model of models)
         if (typeof model.associate === 'function')
-            model.associate(Object.fromEntries(models.map(m => [ m.name, m ])))
-    
+            model.associate(Object.fromEntries(models.map(m => [m.name, m])))
+
     await sequelize.sync()
 }
 

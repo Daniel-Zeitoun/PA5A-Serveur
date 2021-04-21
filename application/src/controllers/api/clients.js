@@ -2,7 +2,7 @@
 
 const express = require('express')
 const router = express.Router()
-const clientService = require('../../services/clients')
+const clientService = require('../../services/clientService')
 
 //At clients connections
 router.put('/:uuid', (req, res) => {
