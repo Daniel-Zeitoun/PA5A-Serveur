@@ -10,7 +10,7 @@ User.initialize = function (sequelize) {
         username: { type: DataTypes.TEXT, allowNull: false, unique: false },
         password: { type: DataTypes.TEXT, allowNull: false, unique: false },
         lastLogin: { type: DataTypes.DATE, allowNull: false, unique: false },
-        role: { type: DataTypes.INTEGER, allowNull: false, unique: false, references: { model: 'Role', key: 'id' } }
+        fk_role: { type: DataTypes.INTEGER, allowNull: false, unique: false}
     },
         {
             sequelize,
@@ -19,9 +19,9 @@ User.initialize = function (sequelize) {
 }
 
 User.associate = function (models) {
-    
+
     User.belongsTo(models.Role, {
-        foreignKey: 'role'
+        foreignKey: 'fk_role'
     })
 }
 

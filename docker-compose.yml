@@ -1,6 +1,5 @@
 version: "3.3"
 services:
-
   db:
     image: postgres:latest
     container_name: pa5a-db
@@ -10,9 +9,27 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: pa5a
     volumes:
-      - ./application/database:/var/lib/postgresql/data
+      - ./database:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pa5a-pgadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    links:
+      - "db:database"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-pa5a}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_ENABLE_TLS: 1
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+      - ./certs:/certs
+    ports:
+      - "5454:443"
   web:
     image: node:14.16.1-alpine3.13
     container_name: pa5a-web
@@ -24,6 +41,7 @@ services:
     working_dir: /app
     volumes:
       - ./application:/app
+      - ./certs:/certs
     command: sh -c "npm install && npm run watch"
     ports:
       - "80:80"

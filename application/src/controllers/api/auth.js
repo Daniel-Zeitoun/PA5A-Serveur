@@ -6,31 +6,30 @@ const router = Router()
 const jsonParser = require('express').json
 
 router.post('/login', jsonParser(), (req, res, next) => {
-    
+
     authService.login(req.body)
-    
-    .then(user => { 
-        
-        if (user === null){
-            res.status(401).end()
-            return 
-        }
+        .then(user => {
 
-        req.session.user = user.id
+            if (user === null) {
+                res.status(401).end()
+                return
+            }
 
-        req.session.save(err => {
-            
-            res.status(204).end()
+            req.session.user = user.id
+
+            req.session.save(err => {
+
+                res.status(204).end()
+            })
         })
-    })
-    
-    .catch(next)
+
+        .catch(next)
 })
 
 router.delete('/logout', (req, res, next) => {
 
     req.session.regenerate(err => {
-        if (err){
+        if (err) {
             next(err)
             return
         }

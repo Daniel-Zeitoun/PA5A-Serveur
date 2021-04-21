@@ -13,8 +13,8 @@ const sequelize = require('../constants/sequelize')
 const app = express()
 const rootDir = path.resolve(__dirname)
 
-const key = fs.readFileSync(path.join(rootDir, '../key.pem'))
-const cert = fs.readFileSync(path.join(rootDir, '../cert.pem'))
+const key = fs.readFileSync('/certs/server.key')
+const cert = fs.readFileSync('/certs/server.cert')
 
 const httpsServer = https.createServer({ key: key, cert: cert }, app)
 const httpServer = http.createServer(app);

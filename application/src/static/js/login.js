@@ -5,13 +5,13 @@
     function getFormErrors(formData) {
 
         const errors = []
-/*
+        /*
         if (!validator.isEmail(formData.get('email')))
             errors.push('Email is invalid')
-*/
+        */
         if (!formData.get('username').length)
-            errors.push('Username must not be empty')    
-            
+            errors.push('Username must not be empty')
+
         if (!formData.get('password').length)
             errors.push('Password must not be empty')
 

@@ -7,7 +7,7 @@ class Screenshot extends Model { }
 Screenshot.initialize = function (sequelize) {
     Screenshot.init({
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-        clientId: { type: DataTypes.INTEGER, allowNull: false, unique: false },
+        fk_clientId: { type: DataTypes.INTEGER, allowNull: false, unique: false },
         filename: { type: DataTypes.TEXT, allowNull: false, unique: true },
         createdDate: { type: DataTypes.DATE, allowNull: false, unique: false }
     },
@@ -18,9 +18,9 @@ Screenshot.initialize = function (sequelize) {
 }
 
 Screenshot.associate = function (models) {
-    
+
     Screenshot.belongsTo(models.Client, {
-        foreignKey: 'clientId'
+        foreignKey: 'fk_clientId'
     })
 }
 

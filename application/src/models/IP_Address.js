@@ -7,10 +7,11 @@ class IP_Address extends Model { }
 IP_Address.initialize = function (sequelize) {
     IP_Address.init({
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-        clientId: { type: DataTypes.INTEGER, allowNull: false, unique: false },
+        ipPublic: { type: DataTypes.INET, allowNull: false, unique: false },
+        ipPrivate: { type: DataTypes.INET, allowNull: false, unique: false },
+        fk_clientId: { type: DataTypes.INTEGER, allowNull: false, unique: false },
         firstPingDate: { type: DataTypes.DATE, allowNull: false, unique: false },
         lastPingDate: { type: DataTypes.DATE, allowNull: false, unique: false },
-        intern: { type: DataTypes.BOOLEAN, allowNull: false, unique: false },
         country: { type: DataTypes.TEXT, allowNull: true, unique: false }
     },
         {
@@ -20,9 +21,9 @@ IP_Address.initialize = function (sequelize) {
 }
 
 IP_Address.associate = function (models) {
-    
+
     IP_Address.belongsTo(models.Client, {
-        foreignKey: 'clientId'
+        foreignKey: 'fk_clientId'
     })
 }
 

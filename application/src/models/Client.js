@@ -19,17 +19,17 @@ Client.initialize = function (sequelize) {
 }
 
 Client.associate = function (models) {
-    
+
     Client.hasMany(models.IP_Address, {
-        foreignKey: 'clientId'
+        foreignKey: 'fk_clientId'
     })
 
     Client.hasMany(models.Log, {
-        foreignKey: 'clientId'
+        foreignKey: 'fk_clientId'
     })
 
     Client.hasMany(models.Screenshot, {
-        foreignKey: 'clientId'
+        foreignKey: 'fk_clientId'
     })
 }
 

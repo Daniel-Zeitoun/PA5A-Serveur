@@ -16,9 +16,9 @@ Role.initialize = function (sequelize) {
 }
 
 Role.associate = function (models) {
-    
+
     Role.hasMany(models.User, {
-        foreignKey: 'role'
+        foreignKey: 'fk_role'
     })
 }
 

@@ -19,10 +19,10 @@ const authService = {
 
         if (hash.digest('hex') !== user.password)
             return null
-        
+
         user.lastLogin = now()
         user.save()
-        
+
         return user
     }
 }

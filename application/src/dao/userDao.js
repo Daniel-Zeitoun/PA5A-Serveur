@@ -5,8 +5,8 @@ const { QueryTypes } = require('sequelize')
 
 const userDao = {
 
-    findOneById: async function (id){
-        
+    findOneById: async function (id) {
+
         const sql = `SELECT * FROM ${User.tableName} WHERE id = "${id}"`
 
         const user = await User.sequelize.query(sql, {
@@ -19,8 +19,8 @@ const userDao = {
         return user
     },
 
-    findOneByUsername: async function (username){
-        
+    findOneByUsername: async function (username) {
+
         const sql = `SELECT * FROM ${User.tableName} WHERE username = "${username}"`
 
         const user = await Users.sequelize.query(sql, {
@@ -33,9 +33,9 @@ const userDao = {
         return user
     },
 
-    insertOne: async function ({ id, username, password }){
+    insertOne: async function ({ id, username, password }) {
 
-        const sql = `INSERT INTO ${User.tableName} (username, password, createdAt, updatedAt) ` + 
+        const sql = `INSERT INTO ${User.tableName} (username, password, createdAt, updatedAt) ` +
             `VALUES ("${username}", "${password}", now(), now())`
 
         await User.sequelize.query(sql, {
