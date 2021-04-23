@@ -6,7 +6,7 @@ const router = Router()
 const jsonParser = require('express').json
 
 router.post('/login', jsonParser(), (req, res, next) => {
-
+    
     authService.login(req.body)
         .then(user => {
 

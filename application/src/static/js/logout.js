@@ -8,7 +8,8 @@
             method: 'DELETE'
         })
             .finally(() => {
-                window.location = document.baseURI
+                const domain = new URL(document.baseURI)
+                window.location = domain.origin
             })
     })
 }())

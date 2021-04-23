@@ -3,12 +3,12 @@
 const User = require('../models/User')
 const userDao = require('../dao/userDao')
 const crypto = require('crypto')
-const { now } = require('sequelize/types/lib/utils')
+const sequelize = require('sequelize')
 
 const authService = {
 
     login: async function ({ username, password }) {
-
+        
         const user = await userDao.findOneByUsername(username)
 
         if (!(user instanceof User))
@@ -20,7 +20,7 @@ const authService = {
         if (hash.digest('hex') !== user.password)
             return null
 
-        user.lastLogin = now()
+        user.lastLogin = sequelize.literal('CURRENT_TIMESTAMP')
         user.save()
 
         return user

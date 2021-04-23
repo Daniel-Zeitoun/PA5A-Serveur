@@ -3,9 +3,12 @@
 const express = require('express')
 const router = express.Router()
 const createHttpError = require('http-errors')
+
 const clientsApi = require('./clients')
+const authApi = require('./auth')
 
 router.use('/clients', clientsApi)
+router.use('/auth', authApi)
 
 //Page not found
 router.all('*', (req, res, next) => {

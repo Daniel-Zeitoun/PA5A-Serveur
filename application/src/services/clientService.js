@@ -2,7 +2,7 @@
 
 const Client = require('../models/Client')
 const clientDao = require('../dao/clientDao')
-const { now } = require('sequelize/types/lib/utils')
+//const { now } = require('sequelize/types/lib/utils')
 
 const clientService = {
     
@@ -13,17 +13,11 @@ const clientService = {
 
         // If he doesn't exist, then we create it
         if (!(client instanceof Client)) {
-            return {
-                isNew: true,
-                data: this.create()
-            }
+            return this.create()
         }
         
         // If he does exist, then we update it
-        return {
-            isNew: false,
-            data: this.update(client)
-        }
+        return this.update(client)
     },
     create: async function () {
         
