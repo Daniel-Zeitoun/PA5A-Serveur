@@ -10,6 +10,7 @@ const SessionStore = require('connect-session-sequelize')(session.Store)
 const api = require('../controllers/api')
 const front = require('../controllers/front')
 const sequelize = require('../constants/sequelize')
+const deserializeUser = require('../controllers/middlewares/deserializeUser')
 
 const app = express()
 const rootDir = path.resolve(__dirname)
@@ -29,6 +30,7 @@ app.use(session({
     store,
     secret: 'this should be in .env and kept secret'
 }))
+app.use(deserializeUser)
 
 for (const [key, value] of Object.entries({
     'view engine': 'ejs',
