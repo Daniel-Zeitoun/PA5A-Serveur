@@ -7,6 +7,7 @@ const sequelize = new Sequelize('pa5a', 'postgres', 'pa5a', {
     dialect: 'postgres',
     logging: console.log,
     logging: false,
+    timezone: 'Europe/Paris',
     dialectOptions: {
         multipleStatements: true
     }
