@@ -1,41 +1,49 @@
 'use strict'
 
-module.exports = {
+const Client = require('../models/Client')
+const clientDao = require('../dao/clientDao')
+const { now } = require('sequelize/types/lib/utils')
 
-    createOrUpdate: function (uuid) {
-        //Appeler la couche DAO pour voir si le client lié au UUID existe.
-        //S'il n'existe pas aller dans create
-        //S'il existe aller dans update
-        if (true ) {
+const clientService = {
+    
+    createOrUpdate: async function (uuid) {
+        
+        // Call the DAO to find if a user exists or not
+        const client = await clientDao.findOneByUuid(uuid)
+
+        // If he doesn't exist, then we create it
+        if (!(client instanceof Client)) {
             return {
                 isNew: true,
                 data: this.create()
             }
         }
+        
+        // If he does exist, then we update it
         return {
             isNew: false,
-            data: this.update()
+            data: this.update(client)
         }
     },
-    create: function () {
-        return {
-            id: 1,
-            name: 'bonjour',
-        }
+    create: async function () {
+        
+        const client = await clientDao.insertOne()
+        
+        return client
     },
-    update: function () {
-        return {
-            id: 1,
-            name: 'bonsoir'
-        }
+    update: async function (client) {
+        
+        // Do updating operations ...
+        
+        return client
     },
 
-    getCommands: function (uuid) {
+    getCommands: async function (uuid) {
 
         //Appeler la couche DAO pour voir les commandes en attente pour le UUID
         return findPendingCommandsByUuid()
     },
-    addCommand: function (uuid) {
+    addCommand: async function (uuid) {
 
         // Permet d'ajouter une commande à la liste des commandes en attente
 
@@ -46,3 +54,5 @@ module.exports = {
         return true
     }
 }
+
+module.exports = clientService
