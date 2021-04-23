@@ -23,6 +23,13 @@ User.associate = function (models) {
     User.belongsTo(models.Role, {
         foreignKey: 'fk_role'
     })
+
+    User.associate = function (models) {
+
+        Role.hasMany(models.Command, {
+            foreignKey: 'fk_userId'
+        })
+    }
 }
 
 module.exports = User
