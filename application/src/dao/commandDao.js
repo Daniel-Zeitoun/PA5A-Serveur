@@ -7,7 +7,7 @@ const commandDao = {
 
     findOneById: async function (id) {
 
-        const sql = `SELECT * FROM ${Command.tableName} WHERE id = "${id}"`
+        const sql = `SELECT * FROM "${Command.tableName}" WHERE id = '${id}'`
 
         const command = await Command.sequelize.query(sql, {
             type: QueryTypes.SELECT,
@@ -21,7 +21,7 @@ const commandDao = {
 
     findOneByUuid: async function (uuid) {
 
-        const sql = `SELECT * FROM ${Command.tableName} WHERE uuid = "${uuid}"`
+        const sql = `SELECT * FROM "${Command.tableName}" WHERE uuid = '${uuid}'`
 
         const command = await Command.sequelize.query(sql, {
             type: QueryTypes.SELECT,
@@ -45,8 +45,8 @@ const commandDao = {
 
     insertOne: async function ({ commandName, fk_clientId, fk_userId}) {
 
-        const sql = `INSERT INTO ${Command.tableName} (commandName, pending, fk_clientId, fk_userId, createdAt, updatedAt) ` +
-            `VALUES ("${commandName}", true, "${fk_clientId}", "${fk_userId}" now(), now())`
+        const sql = `INSERT INTO "${Command.tableName}" (commandName, pending, fk_clientId, fk_userId, createdAt, updatedAt) ` +
+            `VALUES ('${commandName}', true, '${fk_clientId}', '${fk_userId}' now(), now())`
 
         await Command.sequelize.query(sql, {
             type: QueryTypes.INSERT

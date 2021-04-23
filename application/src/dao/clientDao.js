@@ -7,7 +7,7 @@ const clientDao = {
 
     findOneById: async function (id) {
 
-        const sql = `SELECT * FROM ${Client.tableName} WHERE id = "${id}"`
+        const sql = `SELECT * FROM "${Client.tableName}" WHERE id = '${id}'`
 
         const client = await Client.sequelize.query(sql, {
             type: QueryTypes.SELECT,
@@ -21,7 +21,7 @@ const clientDao = {
 
     findOneByUuid: async function (uuid) {
 
-        const sql = `SELECT * FROM ${Client.tableName} WHERE uuid = "${uuid}"`
+        const sql = `SELECT * FROM "${Client.tableName}" WHERE uuid = '${uuid}'`
 
         const client = await Client.sequelize.query(sql, {
             type: QueryTypes.SELECT,
@@ -35,8 +35,8 @@ const clientDao = {
 
     insertOne: async function ({ uuid }) {
 
-        const sql = `INSERT INTO ${Client.tableName} (uuid, createdAt, updatedAt) ` +
-            `VALUES ("${uuid}", now(), now())`
+        const sql = `INSERT INTO "${Client.tableName}" (uuid, createdAt, updatedAt) ` +
+            `VALUES ('${uuid}', now(), now())`
 
         await Client.sequelize.query(sql, {
             type: QueryTypes.INSERT
