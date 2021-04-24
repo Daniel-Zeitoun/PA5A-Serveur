@@ -30,22 +30,6 @@ const clientService = {
         // Do updating operations ...
         
         return client
-    },
-
-    getCommands: async function (uuid) {
-
-        //Appeler la couche DAO pour voir les commandes en attente pour le UUID
-        return findPendingCommandsByUuid()
-    },
-    addCommand: async function (uuid) {
-
-        // Permet d'ajouter une commande à la liste des commandes en attente
-
-        // Check si déjà une commande en attente (keylogs)
-        // Si oui, alors message erreur sur le front 
-        return false
-        // Si non, on ajoute à la liste d'attente
-        return true
     }
 }
 

@@ -9,7 +9,7 @@ Screenshot.initialize = function (sequelize) {
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
         fk_clientId: { type: DataTypes.INTEGER, allowNull: false, unique: false },
         filename: { type: DataTypes.TEXT, allowNull: false, unique: true },
-        createdDate: { type: DataTypes.DATE, allowNull: false, unique: false }
+        //createdDate: { type: DataTypes.DATE, allowNull: false, unique: false }
     },
         {
             sequelize,

