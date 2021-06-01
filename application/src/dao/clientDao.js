@@ -1,7 +1,7 @@
 'use strict'
 
 const Client = require('../models/Client')
-const { QueryTypes } = require('sequelize')
+const { QueryTypes, col } = require('sequelize')
 
 const clientDao = {
 
@@ -21,27 +21,29 @@ const clientDao = {
 
     findOneByUuid: async function (uuid) {
 
-        const sql = `SELECT * FROM "${Client.tableName}" WHERE uuid = '${uuid}'`
-
-        const client = await Client.sequelize.query(sql, {
-            type: QueryTypes.SELECT,
-            plain: true,
-            mapToModel: true,
-            model: Client
+        const client = await Client.findOne({
+            where: {
+                uuid: uuid
+            }
         })
-
         return client
     },
+    insertOne: async function ({ uuid, pcName }) {
 
-    insertOne: async function ({ uuid }) {
-
-        const sql = `INSERT INTO "${Client.tableName}" (uuid, createdAt, updatedAt) ` +
-            `VALUES ('${uuid}', now(), now())`
-
-        await Client.sequelize.query(sql, {
-            type: QueryTypes.INSERT
+        const client = await Client.create({
+            uuid: uuid,
+            pcName: pcName
         })
+        return client.dataValues
     },
+    updateOne: async function ({ uuid, pcName }) {
+
+        const client = await Client.update(
+            { uuid: uuid, pcName: pcName },
+            { where: { uuid: uuid }, returning: true, plain: true }
+        )
+        return client[1].dataValues
+    }
 }
 
 module.exports = clientDao

@@ -9,24 +9,20 @@ Command.initialize = function (sequelize) {
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
         commandName: { type: DataTypes.TEXT, allowNull: false, unique: false },
         pending: { type: DataTypes.BOOLEAN, allowNull: false, unique: false },
-        fk_clientId: { type: DataTypes.INTEGER, allowNull: false, unique: false },
-        fk_userId: { type: DataTypes.INTEGER, allowNull: false, unique: false }
+        fk_client: { type: DataTypes.INTEGER, allowNull: false, unique: false },
+        fk_user: { type: DataTypes.INTEGER, allowNull: true, unique: false }////////////////////////:
     },
         {
             sequelize,
-            modelName: 'Command'
+            modelName: 'Command',
+            tableName: 'Commands'
         })
 }
 
 Command.associate = function (models) {
 
-    Command.belongsTo(models.Client, {
-        foreignKey: 'fk_clientId'
-    })
-
-    Command.belongsTo(models.User, {
-        foreignKey: 'fk_userId'
-    })
+    Command.belongsTo(models.Client, { foreignKey: 'fk_client' })
+    Command.belongsTo(models.User, { foreignKey: 'fk_user' })
 }
 
 module.exports = Command

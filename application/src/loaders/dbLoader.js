@@ -2,6 +2,7 @@
 
 const sequelize = require('../constants/sequelize')
 const Client = require('../models/Client')
+const Command = require('../models/Command')
 const IP_Address = require('../models/IP_Address')
 const Log = require('../models/Log')
 const Role = require('../models/Role')
@@ -12,6 +13,7 @@ const databaseLoader = async () => {
 
     const models = [
         Client,
+        Command,
         IP_Address,
         Log,
         Role,

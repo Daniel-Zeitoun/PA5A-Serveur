@@ -1,60 +1,46 @@
 'use strict'
 
 const Command = require('../models/Command')
+const Client = require('../models/Client')
 const { QueryTypes } = require('sequelize')
 const commandService = require('../services/commandService')
 
 const commandDao = {
 
-    findOneById: async function (id) {
-
-        const sql = `SELECT * FROM "${Command.tableName}" WHERE id = '${id}'`
-
-        const command = await Command.sequelize.query(sql, {
-            type: QueryTypes.SELECT,
-            plain: true,
-            mapToModel: true,
-            model: Command
+    findPendingCommandsByUuid: async function (uuid) {
+        const commands = await Command.findAll({
+            include: [{
+                model: Client,
+                where: { uuid: uuid },
+                required: true
+            }]
         })
 
-        return command
+        let commandsArray = new Array
+        commands.forEach(element => {
+            commandsArray.push(element.commandName)
+        });
+
+        return commandsArray
     },
 
-    findOneByUuid: async function (uuid) {
+    insertOne: async function (clientId, commandName) {
 
-        const sql = `SELECT * FROM "${Command.tableName}" WHERE uuid = '${uuid}'`
-
-        const command = await Command.sequelize.query(sql, {
-            type: QueryTypes.SELECT,
-            plain: true,
-            mapToModel: true,
-            model: Command
+        const command = await Command.create({
+            commandName: commandName,
+            pending: true,
+            fk_client: clientId
         })
 
-        return command
-    },
-    findPendingCommandsByUuid: function (uuid) {
-       
-        const sql = `SELECT "commandName" FROM "${Command.tableName}" WHERE uuid = '${uuid}' AND pending = 1`
+        return command.dataValues
 
-        const commands = await Command.sequelize.query(sql, {
-            type: QueryTypes.SELECT,
-            plain: true,
-            mapToModel: true,
-            model: Command
-        })
-
-        return commands
-    },
-
-    insertOne: async function ({ commandName, fk_clientId, fk_userId}) {
-
-        const sql = `INSERT INTO "${Command.tableName}" (commandName, pending, fk_clientId, fk_userId, createdAt, updatedAt) ` +
-            `VALUES ('${commandName}', true, '${fk_clientId}', '${fk_userId}' now(), now())`
-
-        await Command.sequelize.query(sql, {
-            type: QueryTypes.INSERT
-        })
+        /*
+                const sql = `INSERT INTO "${Command.tableName}" (commandName, pending, fk_clientId, fk_userId, createdAt, updatedAt) ` +
+                    `VALUES ('${commandName}', true, '${fk_clientId}', '${fk_userId}' now(), now())`
+        
+                await Command.sequelize.query(sql, {
+                    type: QueryTypes.INSERT
+                })*/
     },
 }
 

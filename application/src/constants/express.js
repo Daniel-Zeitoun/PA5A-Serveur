@@ -6,6 +6,7 @@ const http = require('http')
 const https = require('https')
 const express = require('express')
 const session = require('express-session')
+const bodyParser = require('body-parser')
 const SessionStore = require('connect-session-sequelize')(session.Store)
 const api = require('../controllers/api')
 const front = require('../controllers/front')
@@ -26,11 +27,12 @@ const store = new SessionStore({
 })
 app.use(session({
     resave: false,
-	saveUninitialized: true,
+    saveUninitialized: true,
     store,
     secret: 'this should be in .env and kept secret'
 }))
 app.use(deserializeUser)
+app.use(bodyParser.json())
 
 for (const [key, value] of Object.entries({
     'view engine': 'ejs',
