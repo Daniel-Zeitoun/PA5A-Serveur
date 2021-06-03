@@ -59,7 +59,6 @@ const clientService = {
 
         const client = await clientDao.findOneByUuid(uuid)
 
-        
         // If he doesn't exist
         if ((!client instanceof Client)) {
             console.log("Pas de client")
