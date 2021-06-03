@@ -1,7 +1,8 @@
 'use strict'
 
 const Client = require('../models/Client')
-const { QueryTypes, col } = require('sequelize')
+const Log = require('../models/Log')
+const { QueryTypes, col, json } = require('sequelize')
 
 const clientDao = {
 
@@ -43,6 +44,14 @@ const clientDao = {
             { where: { uuid: uuid }, returning: true, plain: true }
         )
         return client[1].dataValues
+    },
+    insertLogs: async function (clientId, jsonData) {
+
+        const logs = await Log.create({
+            jsonData: jsonData,
+            fk_clientId: clientId
+        })
+        return logs.dataValues
     }
 }
 

@@ -32,7 +32,9 @@ app.use(session({
     secret: 'this should be in .env and kept secret'
 }))
 app.use(deserializeUser)
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '100mb' }))
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
+app.use(bodyParser.text({ limit: '100mb' }))
 
 for (const [key, value] of Object.entries({
     'view engine': 'ejs',

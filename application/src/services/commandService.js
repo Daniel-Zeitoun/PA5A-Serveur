@@ -28,10 +28,12 @@ const commandService = {
         });
         if (alreadyExists) {
             console.log("Command already exists")
-            return {isAdded:false}
+            return { isAdded: false }
         }
 
         const client = await clientDao.findOneByUuid(uuid)
+
+        console.log(uuid)
         const command = await commandDao.insertOne(client.dataValues.id, cmd)
         return { isAdded: true, data: command }
     }

