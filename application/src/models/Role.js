@@ -18,7 +18,7 @@ Role.initialize = function (sequelize) {
 
 Role.associate = function (models) {
 
-    Role.hasMany(models.User, { foreignKey: 'fk_role' })
+    Role.hasMany(models.User, { foreignKey: 'fk_roleId' })
 }
 
 module.exports = Role

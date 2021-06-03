@@ -9,10 +9,8 @@ IP_Address.initialize = function (sequelize) {
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
         ipAddress: { type: DataTypes.INET, allowNull: false, unique: false },
         isPrivate: { type: DataTypes.BOOLEAN, allowNull: false, unique: false },
-        firstPing: { type: DataTypes.DATE, allowNull: false, unique: false },
         lastPing: { type: DataTypes.DATE, allowNull: false, unique: false },
-        country: { type: DataTypes.TEXT, allowNull: true, unique: false },
-        fk_clientId: { type: DataTypes.INTEGER, allowNull: false, unique: false }
+        country: { type: DataTypes.TEXT, allowNull: true, unique: false }
     },
         {
             sequelize,
@@ -23,7 +21,7 @@ IP_Address.initialize = function (sequelize) {
 
 IP_Address.associate = function (models) {
 
-    IP_Address.belongsTo(models.Client, { foreignKey: 'fk_client' })
+    IP_Address.belongsTo(models.Client, { foreignKey: 'fk_clientId' })
 }
 
 module.exports = IP_Address

