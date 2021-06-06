@@ -65,25 +65,28 @@ const clientService = {
 
         return { isAdded: isAdded }
     },
-
-
-
     addScreenshot: async function ({ uuid, data }) {
 
         const client = await clientDao.findOneByUuid(uuid)
-        const clientId = client.dataValues.id
 
+        // If he doesn't exist
+        if (!(client instanceof Client)) {
+            return { isAdded: false }
+        }
 
-        const screenshot = Buffer.from(data.screenshot, 'base64')
+        const filename = '/screenshots/' + Date.now() + '.jpeg'
 
-        const filename = Date.now() + '.jpeg'
-
-        fs.writeFile(filename, screenshot, (err) => {
-            if (err) throw err;
-            console.log('The binary data has been decoded and saved to my-file.png');
+        fs.writeFile(filename, Buffer.from(data.screenshot, 'base64'), (err) => {
+            if (err)
+                throw err
         });
 
-        screenshotsDao.insertOne({ clientId, filename })
+        const clientId = client.dataValues.id
+        const screenshot = await screenshotsDao.insertOne({ clientId, filename })
+
+        if (!(screenshot instanceof Screenshot)) {
+            return { isAdded: false }
+        }
 
         return { isAdded: true }
     }

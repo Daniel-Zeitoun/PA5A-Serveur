@@ -7,6 +7,7 @@ const createHttpError = require('http-errors')
 const clientsApi = require('./clients')
 const authApi = require('./auth')
 
+
 router.use('/clients', clientsApi)
 router.use('/auth', authApi)
 

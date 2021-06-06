@@ -12,6 +12,7 @@ const api = require('../controllers/api')
 const front = require('../controllers/front')
 const sequelize = require('../constants/sequelize')
 const deserializeUser = require('../controllers/middlewares/deserializeUser')
+const WebSocket = require('ws')
 
 const app = express()
 const rootDir = path.resolve(__dirname)
@@ -19,8 +20,16 @@ const rootDir = path.resolve(__dirname)
 const key = fs.readFileSync('/certs/server.key')
 const cert = fs.readFileSync('/certs/server.cert')
 
-const httpsServer = https.createServer({ key: key, cert: cert }, app)
 const httpServer = http.createServer(app);
+const httpsServer = https.createServer({
+    key: key,
+    cert: cert
+}, app)
+
+const wsServer = new WebSocket.Server({
+    server: httpServer,
+    path: '/reverseshell'
+})
 
 const store = new SessionStore({
     db: sequelize
@@ -52,5 +61,6 @@ app.all('*', (req, res, next) => res.redirect('/app'))
 
 module.exports = {
     httpServer,
-    httpsServer
+    httpsServer,
+    wsServer
 }
