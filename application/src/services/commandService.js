@@ -1,5 +1,6 @@
 'use strict'
 
+const Client = require('../models/Client')
 const Command = require('../models/Command')
 const commandDao = require('../dao/commandDao')
 const clientDao = require('../dao/clientDao')
@@ -10,31 +11,32 @@ const commandService = {
 
     getCommands: async function (uuid) {
 
-        //Appeler la couche DAO pour voir les commandes en attente pour le UUID
-        return await commandDao.findPendingCommandsByUuid(uuid)
-    },
-    addCommand: async function (uuid, cmd) {
+        const client = await clientDao.findOneByUuid(uuid)
 
-        // Permet d'ajouter une commande à la liste des commandes en attente
-
-        const commands = await commandDao.findPendingCommandsByUuid(uuid)
-        let alreadyExists = false
-
-        commands.forEach(element => {
-            console.log(element + " == " + cmd)
-            if (element === cmd) {
-                alreadyExists = true
-            }
-        });
-        if (alreadyExists) {
-            console.log("Command already exists")
-            return { isAdded: false }
+        // If he doesn't exist
+        if (!(client instanceof Client)) {
+            return { exists: false }
         }
+
+        const commands = await commandDao.findPendingCommandsByClientId(client.id)
+
+        for await (const command of commands) {
+            const ret = await commandDao.updateOneById(command.id)
+        }
+
+        return { exists: true, data: commands }
+    },
+    addCommand: async function ({ uuid, data }) {
 
         const client = await clientDao.findOneByUuid(uuid)
 
-        console.log(uuid)
-        const command = await commandDao.insertOne(client.dataValues.id, cmd)
+        // If he doesn't exist
+        if (!(client instanceof Client)) {
+            return { isAdded: false }
+        }
+
+        const command = await commandDao.insertOne({ clientId: client.id, name: data.name })
+
         return { isAdded: true, data: command }
     }
 }

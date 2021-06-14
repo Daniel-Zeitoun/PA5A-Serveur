@@ -14,7 +14,7 @@ router.use((req, res, next) => {
 })
 
 router.get('/', (req, res, next) => {
-    
+
     if (typeof req.session.user === 'undefined' || req.session.user === null) {
         res.render('pages/login')
     }

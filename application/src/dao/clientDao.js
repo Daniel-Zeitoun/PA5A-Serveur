@@ -5,23 +5,15 @@ const Keylog = require('../models/Keylog')
 const { QueryTypes, col, json } = require('sequelize')
 
 const clientDao = {
-
     findOneById: async function (id) {
 
-        const sql = `SELECT * FROM "${Client.tableName}" WHERE id = '${id}'`
-
-        const client = await Client.sequelize.query(sql, {
-            type: QueryTypes.SELECT,
-            plain: true,
-            mapToModel: true,
-            model: Client
+        const client = await Client.findOne({
+            where: {
+                id: id
+            }
         })
-
         return client
     },
-
-
-
     findOneByUuid: async function (uuid) {
 
         const client = await Client.findOne({
@@ -39,25 +31,24 @@ const clientDao = {
         })
         return client
     },
-    updateOne: async function ({ uuid, computerName }) {
+    updateOneByUuid: async function ({ uuid, computerName }) {
 
-        const client = await Client.update(
-            { uuid: uuid, computerName: computerName },
-            { where: { uuid: uuid }, returning: true, plain: true }
+        const client = await Client.update({
+            uuid: uuid,
+            computerName: computerName
+        },
+            {
+                where: { uuid: uuid },
+                returning: true,
+                plain: true
+            }
         )
         return client
     },
+    getAll: async function () {
 
-
-
-
-    insertLogs: async function (clientId, jsonData) {
-
-        const logs = await Keylog.create({
-            jsonData: jsonData,
-            fk_clientId: clientId
-        })
-        return logs.dataValues
+        const clients = await Client.findAll()
+        return clients
     }
 }
 

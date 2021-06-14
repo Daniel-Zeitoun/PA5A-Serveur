@@ -20,8 +20,8 @@ User.initialize = function (sequelize) {
 
 User.associate = function (models) {
 
-    User.belongsTo(models.Role, { foreignKey: 'fk_roleId' })
-    User.hasMany(models.Command, { foreignKey: 'fk_userId' })
+    User.belongsTo(models.Role, { foreignKey: 'roleId' })
+    User.hasMany(models.Command, { foreignKey: 'userId' })
 }
 
 module.exports = User

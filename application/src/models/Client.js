@@ -19,10 +19,10 @@ Client.initialize = function (sequelize) {
 
 Client.associate = function (models) {
 
-    Client.hasMany(models.IP_Address, { foreignKey: 'fk_clientId' })
-    Client.hasMany(models.Keylog, { foreignKey: 'fk_clientId' })
-    Client.hasMany(models.Screenshot, { foreignKey: 'fk_clientId' })
-    Client.hasMany(models.Command, { foreignKey: 'fk_clientId' })
+    Client.hasMany(models.IP_Address, { foreignKey: 'clientId' })
+    Client.hasMany(models.Keylog, { foreignKey: 'clientId' })
+    Client.hasMany(models.Screenshot, { foreignKey: 'clientId' })
+    Client.hasMany(models.Command, { foreignKey: 'clientId' })
 }
 
 module.exports = Client

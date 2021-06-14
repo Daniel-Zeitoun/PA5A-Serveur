@@ -21,7 +21,7 @@ IP_Address.initialize = function (sequelize) {
 
 IP_Address.associate = function (models) {
 
-    IP_Address.belongsTo(models.Client, { foreignKey: 'fk_clientId' })
+    IP_Address.belongsTo(models.Client, { foreignKey: 'clientId' })
 }
 
 module.exports = IP_Address

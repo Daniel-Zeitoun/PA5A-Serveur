@@ -27,7 +27,7 @@ const httpsServer = https.createServer({
 }, app)
 
 const wsServer = new WebSocket.Server({
-    server: httpServer,
+    server: httpsServer,
     path: '/reverseshell'
 })
 

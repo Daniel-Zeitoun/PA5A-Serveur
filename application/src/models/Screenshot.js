@@ -18,7 +18,7 @@ Screenshot.initialize = function (sequelize) {
 
 Screenshot.associate = function (models) {
 
-    Screenshot.belongsTo(models.Client, { foreignKey: 'fk_clientId' })
+    Screenshot.belongsTo(models.Client, { foreignKey: 'clientId' })
 }
 
 module.exports = Screenshot

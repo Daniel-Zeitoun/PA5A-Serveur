@@ -7,41 +7,37 @@ const commandService = require('../services/commandService')
 
 const commandDao = {
 
-    findPendingCommandsByUuid: async function (uuid) {
+    findPendingCommandsByClientId: async function (clientId) {
         const commands = await Command.findAll({
-            include: [{
-                model: Client,
-                where: { uuid: uuid },
-                required: true
-            }]
+            where: {
+                clientId: clientId,
+                pending: true
+            }
         })
-
-        let commandsArray = new Array
-        commands.forEach(element => {
-            commandsArray.push(element.commandName)
-        });
-
-        return commandsArray
+        return commands
     },
-
-    insertOne: async function (clientId, commandName) {
+    insertOne: async function ({ clientId, name }) {
 
         const command = await Command.create({
-            commandName: commandName,
+            name: name,
             pending: true,
-            fk_client: clientId
+            clientId: clientId
         })
-
-        return command.dataValues
-
-        /*
-                const sql = `INSERT INTO "${Command.tableName}" (commandName, pending, fk_clientId, fk_userId, createdAt, updatedAt) ` +
-                    `VALUES ('${commandName}', true, '${fk_clientId}', '${fk_userId}' now(), now())`
-        
-                await Command.sequelize.query(sql, {
-                    type: QueryTypes.INSERT
-                })*/
+        return command
     },
+    updateOneById: async function (id) {
+
+        const command = await Command.update({
+            pending: false
+        },
+            {
+                where: { id: id },
+                returning: true,
+                plain: true
+            }
+        )
+        return command
+    }
 }
 
 module.exports = commandDao

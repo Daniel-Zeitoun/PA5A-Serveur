@@ -7,7 +7,10 @@ class Keylog extends Model { }
 Keylog.initialize = function (sequelize) {
     Keylog.init({
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-        jsonData: { type: DataTypes.JSON, allowNull: true, unique: false }
+        datetime: { type: DataTypes.DATE, allowNull: false, unique: false },
+        path: { type: DataTypes.TEXT, allowNull: false, unique: false },
+        application: { type: DataTypes.TEXT, allowNull: false, unique: false },
+        logs: { type: DataTypes.TEXT, allowNull: false, unique: false }
     },
         {
             sequelize,
@@ -18,7 +21,7 @@ Keylog.initialize = function (sequelize) {
 
 Keylog.associate = function (models) {
 
-    Keylog.belongsTo(models.Client, { foreignKey: 'fk_clientId' })
+    Keylog.belongsTo(models.Client, { foreignKey: 'clientId' })
 }
 
 module.exports = Keylog

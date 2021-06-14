@@ -3,7 +3,6 @@
 const { httpServer, httpsServer, wsServer } = require('../constants/express')
 const sequelize = require('../constants/sequelize')
 
-
 const appLoader = async () => {
     const httpPort = 80
     const httpsPort = 443
@@ -22,7 +21,7 @@ const appLoader = async () => {
         wsServer.on('connection', function connection(ws) {
             console.log(`Connexion ok : ${ws}`)
 
-
+            
             ws.on('message', function incoming(message) {
                 console.log(`Message recu : ${message}`)
             })

