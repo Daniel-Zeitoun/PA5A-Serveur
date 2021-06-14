@@ -6,7 +6,10 @@ const createHttpError = require('http-errors')
 const User = require('../../models/User')
 
 const router = express.Router()
+const victims = require('./victims')
+
 router.use(escapingFunctions)
+router.use('/victims', victims)
 
 router.use((req, res, next) => {
     res.locals.documentBase = `${req.protocol}://${req.hostname}/`

@@ -40,6 +40,16 @@ const clientService = {
             computerName: data.computerName
         })
         return client
+    },
+    getAll: async function () {
+
+        const clients = await clientDao.getAll()
+        return clients
+    },
+    findOneByUuid: async function (uuid) {
+
+        const client = await clientDao.findOneByUuid(uuid)
+        return client
     }
 }
 

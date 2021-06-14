@@ -1,0 +1,42 @@
+<%- include('../partials/header'); %>
+    <%- include('../partials/navbar'); %>
+
+        <main>
+            <div class="jumbotron">
+                <h1 class="text-center">Bots</h1>
+
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Computer Name</th>
+                                <th scope="col">UUID</th>
+                                <th scope="col">Last Update</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <% for (var c in clients ) { 
+                                    const year = clients[c].updatedAt.getFullYear()
+                                    const month = (clients[c].updatedAt.getMonth() < 9 ? '0' : '') + (clients[c].updatedAt.getMonth() + 1)
+                                    const day = clients[c].updatedAt.getDate()
+                                    const hours = (clients[c].updatedAt.getHours() < 9 ? '0' : '') + (clients[c].updatedAt.getHours())
+                                    const minutes = (clients[c].updatedAt.getMinutes() < 9 ? '0' : '') + (clients[c].updatedAt.getMinutes()) 
+                                    const clientDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes
+                                %>
+                                    <tr>
+                                        <th scope="row"><%= clients[c].id %></th>
+                                        <td><%= clients[c].computerName %></td>
+                                        <td><a href="/app/victims/<%= clients[c].uuid %>"><%= clients[c].uuid %></a></td>
+                                        <td><%= clientDate %></td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>            
+        </main>
+
+    <%- include('../partials/footer'); %>

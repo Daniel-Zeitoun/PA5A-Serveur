@@ -46,8 +46,21 @@ const clientDao = {
         return client
     },
     getAll: async function () {
-
         const clients = await Client.findAll()
+        /*.then( function(clients) {
+            
+            clients = clients.map( function(client) {
+                
+                const year = client.updatedAt.getFullYear()
+                const month = (client.updatedAt.getMonth() < 9 ? '0' : '') + (client.updatedAt.getMonth() + 1) 
+                const day = client.updatedAt.getDate()
+                
+                client.lastUpdate = day + '-' + month + '-' + year
+                console.log(client)
+                return client;
+            })
+        })*/
+        
         return clients
     }
 }
