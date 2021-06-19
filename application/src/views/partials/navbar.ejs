@@ -1,21 +1,58 @@
-<header>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">PA5A</a>
-        <div class="navbar-nav mr-auto">
-            <div class="nav-item">
-                <a class="nav-link" href="/">Home</a>
-            </div>
-            <li class="nav-item">
-                <a class="nav-link" href="/app/victims">Victims</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/about">About</a>
-            </li>
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header text-center">
+            <img class="" src="/static/img/botnet_logo.png">
         </div>
-        <div class="navbar-nav">
-            <a href='profile' class="nav-item nav-link">Connected as <b><%- encodeForHtml(connectedUser.username) %></b></a>
-            <a href='/app/logout' class="nav-item nav-link">Logout</a>
+
+        <div class="text-center">
+            Connected as <b><%- encodeForHtml(connectedUser.username) %></b>
+        </div>
+        
+        <ul class="list-unstyled components">
+            <li class="active">
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Dashboard (Not yet)</a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a href="#">Dash 1</a>
+                    </li>
+                    <li>
+                        <a href="#">Dash 2</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li>
+                <a href="/app/victims">Victims</a>
+            </li>
+            <li>
+                <a href="/app/command">Commands</a>
+            </li>
+            <li>
+                <a href="#">About</a>
+            </li>
+            <li>
+                <a href='#' class="nav-item nav-link">View profile</a>
+            </li>
+            <li>
+                <a href='/app/logout' class="nav-item nav-link">Logout</a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer text-center font-italic">
+            <p>© Copyright 2021 | PA5A</p>
         </div>
     </nav>
-</header>
+</div>
 
+<!-- Page Content -->
+<div id="content">
+
+    <div id="displaySidebar" class="container-fluid text-center">
+        <button type="button" id="sidebarCollapse" class="btn btn-secondary">
+            <i class="fas fa-align-left"></i>
+            <span>Display/Hide Menu</span>
+        </button>
+    </div>
