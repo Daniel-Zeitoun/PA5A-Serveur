@@ -12,3 +12,9 @@ $(document).ready(function () {
 
 });
 
+// For victims table --> Open link to victim
+$(document).ready(function ($) {
+    $('*[data-href]').on('click', function() {
+        window.location = $(this).data("href");
+    });
+});

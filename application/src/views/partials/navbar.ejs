@@ -2,11 +2,20 @@
     <!-- Sidebar -->
     <nav id="sidebar">
         <div class="sidebar-header text-center">
-            <img class="" src="/static/img/botnet_logo.png">
+            <img src="/static/img/botnet_logo.png" alt="Logo">
         </div>
-
+        
+        <% 
+            const year = connectedUser.lastLogin.getFullYear()
+            const month = (connectedUser.lastLogin.getMonth() < 9 ? '0' : '') + (connectedUser.lastLogin.getMonth() + 1)
+            const day = connectedUser.lastLogin.getDate()
+            const hours = (connectedUser.lastLogin.getHours() < 9 ? '0' : '') + (connectedUser.lastLogin.getHours())
+            const minutes = (connectedUser.lastLogin.getMinutes() < 9 ? '0' : '') + (connectedUser.lastLogin.getMinutes()) 
+            const lastLogin = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes
+        %>
         <div class="text-center">
-            Connected as <b><%- encodeForHtml(connectedUser.username) %></b>
+            Connected as <b><%- encodeForHtml(connectedUser.username) %></b><br>
+            Last login : <b><%- encodeForHtml(lastLogin) %></b>
         </div>
         
         <ul class="list-unstyled components">
