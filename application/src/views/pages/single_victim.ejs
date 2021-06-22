@@ -45,9 +45,9 @@
         </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-around mt-4">
-            <button class="btn btn-secondary btn-command" type="button">Keylogs</button>
-            <button class="btn btn-secondary btn-command" type="button">Screenshots</button>
-            <button class="btn btn-secondary btn-command" type="button">Reverse Shell</button>
+            <button class="btn btn-secondary btn-command" type="button" data-uuid="<%= single_client.uuid %>" data-command="keylogs">Keylogs</button>
+            <button class="btn btn-secondary btn-command" type="button" data-uuid="<%= single_client.uuid %>" data-command="screenshot">Screenshot</button>
+            <button class="btn btn-secondary btn-command" type="button" data-uuid="<%= single_client.uuid %>" data-command="shell">Reverse Shell</button>
         </div>
 
     </div>
