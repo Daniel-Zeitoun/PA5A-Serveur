@@ -60,7 +60,7 @@
             submitButton.disable()
 
             login(formData)
-                .then(() => window.location = document.baseURI)
+                .then(() => window.location = window.location.origin)
                 .catch(err => alert(err.message))
                 .finally(() => submitButton.enable())
         }
