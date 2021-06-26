@@ -35,6 +35,11 @@ const keylogsService = {
         }
 
         return { isAdded: true }
+    },
+    findAllByClientId: async function (clientId) {
+
+        const keylogs = await keylogsDao.findAllByClientId(clientId)
+        return keylogs
     }
 }
 

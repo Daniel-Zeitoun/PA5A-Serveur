@@ -14,7 +14,6 @@ router.use(escapingFunctions)
 
 // No matter the URL, if we are not connected, the login page is returned
 router.use((req, res, next) => {
-    console.log(req.path)
     if ((typeof req.session.user === 'undefined' || req.session.user === null) && req.path !== '/login') {
         res.redirect('/app/login')
     }

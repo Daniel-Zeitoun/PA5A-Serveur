@@ -14,6 +14,16 @@ const keylogsDao = {
             logs: logs
         })
         return keylogs
+    },
+    findAllByClientId: async function (clientId) {
+        const keylogs = await Keylog.findAll({
+            where: { clientId: clientId },
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+        
+        return keylogs
     }
 }
 
