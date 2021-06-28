@@ -7,7 +7,7 @@ const { sequelize } = require('../models/Client')
 const keylogsDao = require('../dao/keylogsDao')
 const Keylog = require('../models/Keylog')
 const Screenshot = require('../models/Screenshot')
-const screenshotsDao = require('../dao/ScreenshotsDao')
+const screenshotsDao = require('../dao/screenshotsDao')
 //const { now } = require('sequelize/types/lib/utils')
 
 const clientService = {

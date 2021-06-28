@@ -119,7 +119,7 @@ ul ul a {
     width: 50%;
 }
 
-[data-href] {
+[data-href], .modal-screenshot {
     cursor: pointer;
 }
 

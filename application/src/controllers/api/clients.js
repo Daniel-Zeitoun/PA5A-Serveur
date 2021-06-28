@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const screenshotsDao = require('../../dao/ScreenshotsDao')
+const screenshotsDao = require('../../dao/screenshotsDao')
 const router = express.Router()
 const clientService = require('../../services/clientService')
 const commandService = require('../../services/commandService')
@@ -28,7 +28,7 @@ router.get('/:uuid/commands', async (req, res, next) => {
 })
 
 //At adding command
-router.put('/:uuid/commands', async (req, res, next) => {
+router.post('/:uuid/commands', async (req, res, next) => {
     try {
         const { isAdded, data } = await commandService.addCommand({
             uuid: req.params.uuid,
