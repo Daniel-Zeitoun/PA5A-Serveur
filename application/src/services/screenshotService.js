@@ -23,7 +23,7 @@ const screenshotService = {
         const basePath = '/app/src'
         const filename = '/static/img/screenshots/' + Date.now() + '.jpeg'
 
-        /*fs.writeFile(basePath + filename, Buffer.from(data.screenshot, 'base64'), (err) => {
+        fs.writeFile(basePath + filename, Buffer.from(data.screenshot, 'base64'), (err) => {
             if (err)
                 throw err
         });
@@ -31,7 +31,7 @@ const screenshotService = {
         const screenshot = await screenshotsDao.insertOne({
             clientId: client.id,
             filename: filename
-        })*/
+        })
 
         return { isAdded: true }
     },
@@ -40,6 +40,7 @@ const screenshotService = {
         const screenshots = await screenshotsDao.findAllByClientId(clientId)
         return screenshots
     }
+
 }
 
 module.exports = screenshotService
