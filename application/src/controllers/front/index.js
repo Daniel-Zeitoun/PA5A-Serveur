@@ -55,5 +55,9 @@ router.get('/logout', (req, res, next) => {
     res.render('pages/logout')
 })
 
+router.get('/about', (req, res, next) => {
+    res.render('pages/about')
+})
+
 
 module.exports = router
