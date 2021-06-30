@@ -39,6 +39,18 @@ const screenshotService = {
 
         const screenshots = await screenshotsDao.findAllByClientId(clientId)
         return screenshots
+    },
+    getDataDashboard: async function () {
+
+        const screenshots = await screenshotsDao.getDataDashboard()
+
+        for (let s in screenshots) {
+            let date = screenshots[s].getDataValue('date')
+            date = date.getFullYear() + '-' + (date.getMonth() <= 9 ? '0' : '') + (date.getMonth() + 1) + '-' + date.getDate()
+            screenshots[s].setDataValue('date', date)
+        }
+
+        return screenshots
     }
 
 }

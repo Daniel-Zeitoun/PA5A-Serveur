@@ -1,7 +1,7 @@
 'use strict'
 
 const Keylog = require('../models/Keylog')
-const { QueryTypes, col, json } = require('sequelize')
+const { QueryTypes, col, json, Sequelize } = require('sequelize')
 
 const keylogsDao = {
     insertOne: async function ({clientId, datetime, path, application, logs }) {
@@ -20,6 +20,19 @@ const keylogsDao = {
             where: { clientId: clientId },
             order: [
                 ['id', 'DESC']
+            ]
+        })
+        
+        return keylogs
+    },
+    getDataDashboard: async function () {
+        const keylogs = await Keylog.findAll({
+            attributes: [
+                'id',
+                [Sequelize.col('datetime'), 'date']
+            ],
+            order: [
+                ['id', 'ASC']
             ]
         })
         

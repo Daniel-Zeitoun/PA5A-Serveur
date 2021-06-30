@@ -2,7 +2,7 @@
 
 const Client = require('../models/Client')
 const Keylog = require('../models/Keylog')
-const { QueryTypes, col, json } = require('sequelize')
+const { QueryTypes, col, json, Sequelize } = require('sequelize')
 
 const clientDao = {
     findOneById: async function (id) {
@@ -47,6 +47,19 @@ const clientDao = {
     },
     getAll: async function () {
         const clients = await Client.findAll({
+            order: [
+                ['id', 'ASC']
+            ]
+        })
+        
+        return clients
+    },
+    getDataDashboard: async function () {
+        const clients = await Client.findAll({
+            attributes: [
+                'id',
+                [Sequelize.col('createdAt'), 'date']
+            ],
             order: [
                 ['id', 'ASC']
             ]

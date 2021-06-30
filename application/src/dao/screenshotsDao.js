@@ -2,7 +2,7 @@
 
 const Client = require('../models/Client')
 const Screenshot = require('../models/Screenshot')
-const { QueryTypes, col, json } = require('sequelize')
+const { QueryTypes, col, json, Sequelize } = require('sequelize')
 
 const screenshotsDao = {
     insertOne: async function ({ clientId, filename }) {
@@ -18,6 +18,19 @@ const screenshotsDao = {
             where: { clientId: clientId },
             order: [
                 ['id', 'DESC']
+            ]
+        })
+        
+        return screenshots
+    },
+    getDataDashboard: async function () {
+        const screenshots = await Screenshot.findAll({
+            attributes: [
+                'id',
+                [Sequelize.col('createdAt'), 'date']
+            ],
+            order: [
+                ['id', 'ASC']
             ]
         })
         

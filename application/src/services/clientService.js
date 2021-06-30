@@ -50,6 +50,18 @@ const clientService = {
 
         const client = await clientDao.findOneByUuid(uuid)
         return client
+    },
+    getDataDashboard: async function () {
+
+        const clients = await clientDao.getDataDashboard()
+
+        for (let c in clients) {
+            let date = clients[c].getDataValue('date')
+            date = date.getFullYear() + '-' + (date.getMonth() <= 9 ? '0' : '') + (date.getMonth() + 1) + '-' + date.getDate()
+            clients[c].setDataValue('date', date)
+        }
+
+        return clients
     }
 }
 
