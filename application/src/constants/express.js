@@ -73,42 +73,8 @@ app.all('*', (req, res, next) => res.redirect('/app'))
 // --------------------------------------------------
 // WEBSOCKET SERVER
 // --------------------------------------------------
-
-const wsServerFront = new WebSocket.Server({
-    noServer: true,
-    rejectUnauthorized: false
-});
-const wsServerClient = new WebSocket.Server({
-    noServer: true,
-    rejectUnauthorized: false
-});
-
-/*wsServerFront.on('connection', function connection(ws) {
-    console.log("aaaaaaaaaaaaaaaa")
-});
-
-wsServerClient.on('connection', function connection(ws) {
-    console.log("bbbbbbbbbbbbbbbb")
-});*/
-
-httpsServer.on('upgrade', function upgrade(req, socket, head) {
-
-    switch (url.parse(req.url).pathname) {
-        case '/rsfront':
-            wsServerFront.handleUpgrade(req, socket, head, function done(ws) {
-                wsServerFront.emit('connection', ws, req);
-                
-            });
-            break;
-        case '/rsclient':
-            wsServerClient.handleUpgrade(req, socket, head, function done(ws) {
-                wsServerClient.emit('connection', ws, req);
-            });
-        default:
-            socket.destroy();
-            break;
-    }
-});
+const wsServerFront = new WebSocket.Server({ noServer: true });
+const wsServerClient = new WebSocket.Server({ noServer: true });
 
 module.exports = {
     httpServer,
