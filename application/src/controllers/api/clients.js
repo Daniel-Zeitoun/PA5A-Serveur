@@ -8,6 +8,7 @@ const commandService = require('../../services/commandService')
 const keylogsService = require('../../services/keylogsService')
 const screenshotService = require('../../services/screenshotService')
 
+
 //At clients connections
 router.put('/:uuid', async (req, res, next) => {
     try {
@@ -59,6 +60,5 @@ router.post('/:uuid/screenshot', async (req, res, next) => {
         res.status(isAdded ? 201 : 404).json()
     } catch (e) { next(e) }
 })
-
 
 module.exports = router

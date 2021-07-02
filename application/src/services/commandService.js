@@ -19,12 +19,14 @@ const commandService = {
         }
 
         const commands = await commandDao.findPendingCommandsByClientId(client.id)
+        let commandsArray = new Array()
 
         for await (const command of commands) {
             const ret = await commandDao.updateOneById(command.id)
+            commandsArray.push(command.name)
         }
 
-        return { exists: true, data: commands }
+        return { exists: true, data: commandsArray }
     },
     addCommand: async function ({ uuid, data }) {
 

@@ -13,8 +13,11 @@ const front = require('../controllers/front')
 const sequelize = require('../constants/sequelize')
 const deserializeUser = require('../controllers/middlewares/deserializeUser')
 const WebSocket = require('ws')
+const url = require('url')
+
 
 const app = express()
+
 const rootDir = path.resolve(__dirname)
 
 const key = fs.readFileSync('/certs/server.key')
@@ -26,10 +29,17 @@ const httpsServer = https.createServer({
     cert: cert
 }, app)
 
-const wsServer = new WebSocket.Server({
+//expressWs(app, httpServer)
+//expressWs(app, httpsServer)
+
+/*const wsServer = new WebSocket.Server({
     server: httpsServer,
-    path: '/reverseshell'
-})
+    path: '/rsfront',
+    clientTracking: true,
+    maxReceivedFrameSize: 131072,
+    maxReceivedMessageSize: 10 * 1024 * 1024,
+    autoAcceptConnections: false
+})*/
 
 const store = new SessionStore({
     db: sequelize
@@ -59,8 +69,50 @@ for (const [key, value] of Object.entries({
 
 app.all('*', (req, res, next) => res.redirect('/app'))
 
+
+// --------------------------------------------------
+// WEBSOCKET SERVER
+// --------------------------------------------------
+
+const wsServerFront = new WebSocket.Server({
+    noServer: true,
+    rejectUnauthorized: false
+});
+const wsServerClient = new WebSocket.Server({
+    noServer: true,
+    rejectUnauthorized: false
+});
+
+/*wsServerFront.on('connection', function connection(ws) {
+    console.log("aaaaaaaaaaaaaaaa")
+});
+
+wsServerClient.on('connection', function connection(ws) {
+    console.log("bbbbbbbbbbbbbbbb")
+});*/
+
+httpsServer.on('upgrade', function upgrade(req, socket, head) {
+
+    switch (url.parse(req.url).pathname) {
+        case '/rsfront':
+            wsServerFront.handleUpgrade(req, socket, head, function done(ws) {
+                wsServerFront.emit('connection', ws, req);
+                
+            });
+            break;
+        case '/rsclient':
+            wsServerClient.handleUpgrade(req, socket, head, function done(ws) {
+                wsServerClient.emit('connection', ws, req);
+            });
+        default:
+            socket.destroy();
+            break;
+    }
+});
+
 module.exports = {
     httpServer,
     httpsServer,
-    wsServer
+    wsServerFront,
+    wsServerClient
 }

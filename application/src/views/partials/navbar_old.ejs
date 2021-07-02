@@ -1,0 +1,24 @@
+<header>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">PA5A</a>
+        <div class="navbar-nav mr-auto">
+            <div class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </div>
+            <li class="nav-item">
+                <a class="nav-link" href="/app/victims">Victims</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/app/command">Commands</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+            </li>
+        </div>
+        <div class="navbar-nav">
+            <a href='profile' class="nav-item nav-link">Connected as <b><%- encodeForHtml(connectedUser.username) %></b></a>
+            <a href='/app/logout' class="nav-item nav-link">Logout</a>
+        </div>
+    </nav>
+</header>
+

@@ -3,7 +3,7 @@
 const Command = require('../models/Command')
 const Client = require('../models/Client')
 const { QueryTypes } = require('sequelize')
-const commandService = require('../services/commandService')
+//const commandService = require('../services/commandService')
 
 const commandDao = {
 
