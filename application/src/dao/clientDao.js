@@ -57,11 +57,12 @@ const clientDao = {
     getDataDashboard: async function () {
         const clients = await Client.findAll({
             attributes: [
-                'id',
-                [Sequelize.col('createdAt'), 'date']
+                [Sequelize.fn('count', Sequelize.col('id')), 'nb'],
+                [Sequelize.fn('to_char', Sequelize.col('createdAt'), 'yyyy-mm-dd'), 'date']
             ],
+            group: ['date'],
             order: [
-                ['id', 'ASC']
+                [Sequelize.fn('to_char', Sequelize.col('createdAt'), 'yyyy-mm-dd'), 'ASC']
             ]
         })
         

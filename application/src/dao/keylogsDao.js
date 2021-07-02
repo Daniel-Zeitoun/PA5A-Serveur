@@ -28,11 +28,12 @@ const keylogsDao = {
     getDataDashboard: async function () {
         const keylogs = await Keylog.findAll({
             attributes: [
-                'id',
-                [Sequelize.col('datetime'), 'date']
+                [Sequelize.fn('count', Sequelize.col('id')), 'nb'],
+                [Sequelize.fn('to_char', Sequelize.col('datetime'), 'yyyy-mm-dd'), 'date']
             ],
+            group: ['date'],
             order: [
-                ['id', 'ASC']
+                [Sequelize.fn('to_char', Sequelize.col('datetime'), 'yyyy-mm-dd'), 'ASC']
             ]
         })
         

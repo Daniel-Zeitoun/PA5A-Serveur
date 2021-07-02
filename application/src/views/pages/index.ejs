@@ -2,13 +2,23 @@
 <%- include('../partials/navbar'); %>
 
     <div class="container-fluid">
-        <div class="text-center">
-            Dashboards
-        </div>
-
+        
         <div class="card text-center mt-5">
             <div class="card-header">
-                <h3 class="text-center">Dash 1 : Number of Victims</h3>
+                <div class="row justify-content-around font-weight-bold">
+                    <div class="col-3 text-center">
+                        <div>Clients</div>
+                        <div id="nb_clients"></div>
+                    </div>
+                    <div class="col-3 text-center">
+                        <div>Keylogs</div>
+                        <div id="nb_logs"></div>
+                    </div>
+                    <div class="col-3 text-center">
+                        <div>Screenshots</div>
+                        <div id="nb_screens"></div>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <canvas id="dashboard">
@@ -17,63 +27,46 @@
             </div>
         </div>
 
-        <div class="card text-center mt-5">
-            <div class="card-header">
-                <h3 class="text-center">Dash 2 : Number of Logs</h3>
-            </div>
-            <div class="card-body">
-                blablabla
-            </div>
-        </div>
-
-        <div class="card text-center mt-5 mb-5">
-            <div class="card-header">
-                <h3 class="text-center">Dash 3 : Number of Screenshots</h3>
-            </div>
-            <div class="card-body">
-                blablabla
-            </div>
-        </div>
     </div>
 
     <script>
-        $.post('/api/dashboard', {}, function(res) {
+        // Place correct number to match the dates array
+        function getData(element, dates) {
             
-            console.log(res)
+            let data = new Array(dates.length)
+            data.fill(0)
 
-            for (let element in res) {
-                console.log(element)
-                for (let i = 0; i < res[element].length; i++) {
-                    console.log(i)
-                    console.log(res[element][i].date)
+            for (let item in element) {
+                if (dates.includes(element[item].date)) {
+                    data.splice(dates.indexOf(element[item].date), 1, parseInt(element[item].nb))
                 }
             }
 
-/*
-            // Loading total values into the page
-            $('#nb_clients').html(tab['clients']['nb_clients']);
-            $('#nb_logs').html(tab['keylogs']['nb_logs']);
-            $('#nb_screens').html(tab['screenshots']['nb_screenshots']);
-            $('#nb_cmd').html(tab['cmd']['nb_cmd']);
-
-
-            // Extract all the dates into an Array sorted by dates (alphabetic) and without any doublon
-            let dates = new Array();
-
-            for (let req in tab) {
-                if (['dates_clients', 'dates_keylogs', 'dates_screenshots', 'dates_cmd'].includes(req))
-                    for (let item in tab[req]) {
-                        dates.push(tab[req][item]['date']);
+            return data
+        }
+        
+        $.post('/api/dashboard', {}, function(res) {
+            
+            // Extract all the dates into an Array sorted (alphabetic) and without any doublon
+            let dates = new Array()
+            
+            for (let element in res) {
+                for (let item in res[element]) {
+                    if (!dates.includes(res[element][item].date)) {
+                        dates.push(res[element][item].date)
                     }
+                }
             }
-            dates.sort();
-            dates = Array.from(new Set(dates));
 
+            dates.sort()
 
-            // Extracting values for each elements to display
-            let clients = extractValuesDate(tab['dates_clients'], dates);
-            let keylogs = extractValuesDate(tab['dates_keylogs'], dates);
-            let screenshots = extractValuesDate(tab['dates_screenshots'], dates);
+            
+            // Loading total values into the page
+            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+            $('#nb_clients').html(getData(res.clients, dates).reduce(reducer))
+            $('#nb_logs').html(getData(res.keylogs, dates).reduce(reducer))
+            $('#nb_screens').html(getData(res.screenshots, dates).reduce(reducer))
 
 
             // Creation of the chart of the dashboard
@@ -83,19 +76,19 @@
                 labels: dates,
                 datasets: [{
                     label: 'Victims',
-                    data: clients,
+                    data: getData(res.clients, dates),
                     backgroundColor: 'rgba(255, 99, 132, 0.1)',
                     borderColor: 'rgb(255, 99, 132)',
                     borderWidth: 3
                 }, {
                     label: 'Keylogs',
-                    data: keylogs,
+                    data: getData(res.keylogs, dates),
                     backgroundColor: 'rgba(170, 99, 132, 0.1)',
                     borderColor: 'rgb(170, 99, 132)',
                     borderWidth: 3
                 }, {
                     label: 'Screenshots',
-                    data: screenshots,
+                    data: getData(res.screenshots, dates),
                     backgroundColor: 'rgba(170, 99, 80, 0.1)',
                     borderColor: 'rgb(170, 99, 80)',
                     borderWidth: 3
@@ -111,7 +104,6 @@
             };
 
             const dashboard = new Chart(ctx, config);
-*/
 
         });
     </script>

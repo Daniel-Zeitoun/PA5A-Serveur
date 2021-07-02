@@ -44,13 +44,13 @@ const keylogsService = {
     getDataDashboard: async function () {
 
         const keylogs = await keylogsDao.getDataDashboard()
-
+/*
         for (let k in keylogs) {
             let date = keylogs[k].getDataValue('date')
             date = date.getFullYear() + '-' + (date.getMonth() <= 9 ? '0' : '') + (date.getMonth() + 1) + '-' + date.getDate()
             keylogs[k].setDataValue('date', date)
         }
-
+*/
         return keylogs
     }
 }

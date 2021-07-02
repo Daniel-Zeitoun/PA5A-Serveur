@@ -26,11 +26,12 @@ const screenshotsDao = {
     getDataDashboard: async function () {
         const screenshots = await Screenshot.findAll({
             attributes: [
-                'id',
-                [Sequelize.col('createdAt'), 'date']
+                [Sequelize.fn('count', Sequelize.col('id')), 'nb'],
+                [Sequelize.fn('to_char', Sequelize.col('createdAt'), 'yyyy-mm-dd'), 'date']
             ],
+            group: ['date'],
             order: [
-                ['id', 'ASC']
+                [Sequelize.fn('to_char', Sequelize.col('createdAt'), 'yyyy-mm-dd'), 'ASC']
             ]
         })
         
