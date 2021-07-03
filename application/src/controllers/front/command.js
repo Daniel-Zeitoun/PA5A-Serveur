@@ -8,12 +8,12 @@ const clientService = require('../../services/clientService')
 
 router.get('/shell/:uuid', async (req, res, next) => {
     try {
-        const clients = await clientService.getAll()
+        //const clients = await clientService.getAll()
 
         //res.locals.clients = clients
         //console.log(res.locals.clients)
 
-        res.render('pages/reverse_shell')
+        res.render('pages/reverse_shell', {uuid: req.params.uuid})
     } catch (e) { next(e) }
 })
 

@@ -1,0 +1,33 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    height: 100%;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
+    width: 100%;
+    padding: 10px 40px 40px 40px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+}
+
+input[type="text"] {
+    width: 85%;
+}
+
+input[type="submit"] {
+    width: 10%;
+}
+
+#messages {
+    height: 80%;
+}
+
+#commands-sender {
+    position: bottom;
+}
