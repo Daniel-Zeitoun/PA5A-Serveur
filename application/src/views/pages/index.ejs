@@ -4,17 +4,17 @@
     <div class="container-fluid">
         
         <div class="card text-center mt-5">
-            <div class="card-header">
+            <div class="card-header bg-dark">
                 <div class="row justify-content-around font-weight-bold">
-                    <div class="col-3 text-center">
+                    <div class="col-3 text-center" style="color: rgb(255, 99, 132)">
                         <div>Clients</div>
                         <div id="nb_clients"></div>
                     </div>
-                    <div class="col-3 text-center">
+                    <div class="col-3 text-center" style="color: rgb(76, 165, 255)">
                         <div>Keylogs</div>
                         <div id="nb_logs"></div>
                     </div>
-                    <div class="col-3 text-center">
+                    <div class="col-3 text-center" style="color: rgb(255, 199, 0)">
                         <div>Screenshots</div>
                         <div id="nb_screens"></div>
                     </div>
@@ -75,7 +75,7 @@
             const data = {
                 labels: dates,
                 datasets: [{
-                    label: 'Victims',
+                    label: 'Clients',
                     data: getData(res.clients, dates),
                     backgroundColor: 'rgba(255, 99, 132, 0.1)',
                     borderColor: 'rgb(255, 99, 132)',
@@ -83,14 +83,14 @@
                 }, {
                     label: 'Keylogs',
                     data: getData(res.keylogs, dates),
-                    backgroundColor: 'rgba(170, 99, 132, 0.1)',
-                    borderColor: 'rgb(170, 99, 132)',
+                    backgroundColor: 'rgba(76, 165, 255, 0.1)',
+                    borderColor: 'rgb(76, 165, 255)',
                     borderWidth: 3
                 }, {
                     label: 'Screenshots',
                     data: getData(res.screenshots, dates),
-                    backgroundColor: 'rgba(170, 99, 80, 0.1)',
-                    borderColor: 'rgb(170, 99, 80)',
+                    backgroundColor: 'rgba(255, 199, 0, 0.1)',
+                    borderColor: 'rgb(255, 199, 0)',
                     borderWidth: 3
                 }]
             };
