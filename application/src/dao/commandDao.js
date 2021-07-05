@@ -16,12 +16,13 @@ const commandDao = {
         })
         return commands
     },
-    insertOne: async function ({ clientId, name }) {
+    insertOne: async function ({ clientId, name, userId }) {
 
         const command = await Command.create({
             name: name,
             pending: true,
-            clientId: clientId
+            clientId: clientId, 
+            userId: userId
         })
         return command
     },

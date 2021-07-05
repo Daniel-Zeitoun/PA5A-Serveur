@@ -33,7 +33,8 @@ router.post('/:uuid/commands', async (req, res, next) => {
     try {
         const { isAdded, data } = await commandService.addCommand({
             uuid: req.params.uuid,
-            data: req.body
+            data: req.body,
+            user: req.session.user
         })
         res.status(isAdded ? 201 : 404).json(data)
     } catch (e) { next(e) }

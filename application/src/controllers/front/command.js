@@ -13,7 +13,13 @@ router.get('/shell/:uuid', async (req, res, next) => {
         //res.locals.clients = clients
         //console.log(res.locals.clients)
 
-        res.render('pages/reverse_shell', {uuid: req.params.uuid})
+        if ((typeof req.session.user === 'undefined' || req.session.user === null) && req.path !== '/login') {
+            res.redirect('/app/login')
+        }
+        else {
+            res.render('pages/reverse_shell', {uuid: req.params.uuid})
+        }
+
     } catch (e) { next(e) }
 })
 

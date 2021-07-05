@@ -28,7 +28,7 @@ const commandService = {
 
         return { exists: true, data: commandsArray }
     },
-    addCommand: async function ({ uuid, data }) {
+    addCommand: async function ({ uuid, data, user }) {
 
         const client = await clientDao.findOneByUuid(uuid)
 
@@ -37,7 +37,7 @@ const commandService = {
             return { isAdded: false }
         }
 
-        const command = await commandDao.insertOne({ clientId: client.id, name: data.name })
+        const command = await commandDao.insertOne({ clientId: client.id, name: data.name, userId: user})
 
         return { isAdded: true, data: command }
     }
