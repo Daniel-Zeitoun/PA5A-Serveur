@@ -1,6 +1,7 @@
 'use strict'
 
 const express = require('express')
+const https = require('https')
 const escapingFunctions = require('../middlewares/escaping')
 const router = express.Router()
 const clientService = require('../../services/clientService')
@@ -13,6 +14,27 @@ router.get('/', async (req, res, next) => {
         
         //res.locals.clients = clients
         //console.log(res.locals.clients)
+
+        const ip = req.ip.split(':')[req.ip.split(':').length - 1]
+        console.log(ip)
+        /*
+        https.get('https://ip-api.io/json/' + ip, (resp) => {
+            let data = '';
+
+            // A chunk of data has been received.
+            resp.on('data', (chunk) => {
+                data += chunk;
+            })
+
+            // The whole response has been received. Print out the result.
+            resp.on('end', () => {
+                console.log(JSON.parse(data).country_code);
+            })
+
+        }).on("error", (err) => {
+            console.log("Error: " + err.message)
+        })
+        */
 
         res.render('pages/victims', {clients: clients})
     } catch (e) { next(e) }

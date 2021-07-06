@@ -7,14 +7,14 @@
         <%
             const yearUpdate = single_client.updatedAt.getFullYear()
             const monthUpdate = (single_client.updatedAt.getMonth() < 9 ? '0' : '') + (single_client.updatedAt.getMonth() + 1)
-            const dayUpdate = single_client.updatedAt.getDate()
+            const dayUpdate = (single_client.updatedAt.getDate() < 9 ? '0' : '') + single_client.updatedAt.getDate()
             const hoursUpdate = (single_client.updatedAt.getHours() < 9 ? '0' : '') + (single_client.updatedAt.getHours())
             const minutesUpdate = (single_client.updatedAt.getMinutes() < 9 ? '0' : '') + (single_client.updatedAt.getMinutes()) 
             const clientUpdateDate = yearUpdate + '-' + monthUpdate + '-' + dayUpdate + ' ' + hoursUpdate + ':' + minutesUpdate
 
             const yearInfection = single_client.createdAt.getFullYear()
             const monthInfection = (single_client.createdAt.getMonth() < 9 ? '0' : '') + (single_client.createdAt.getMonth() + 1)
-            const dayInfection = single_client.createdAt.getDate()
+            const dayInfection = (single_client.createdAt.getDate() < 9 ? '0' : '') + single_client.createdAt.getDate()
             const hoursInfection = (single_client.createdAt.getHours() < 9 ? '0' : '') + (single_client.createdAt.getHours())
             const minutesInfection = (single_client.createdAt.getMinutes() < 9 ? '0' : '') + (single_client.createdAt.getMinutes()) 
             const clientInfectionDate = yearInfection + '-' + monthInfection + '-' + dayInfection + ' ' + hoursInfection + ':' + minutesInfection
@@ -73,7 +73,7 @@
                             <% for (let k in keylogs ) { 
                                 const yearLog = keylogs[k].datetime.getFullYear()
                                 const monthLog = (keylogs[k].datetime.getMonth() <= 9 ? '0' : '') + (keylogs[k].datetime.getMonth() + 1)
-                                const dayLog = keylogs[k].datetime.getDate()
+                                const dayLog = (keylogs[k].datetime.getDate() <= 9 ? '0' : '') + keylogs[k].datetime.getDate()
                                 const hoursLog = (keylogs[k].datetime.getHours() <= 9 ? '0' : '') + (keylogs[k].datetime.getHours())
                                 const minutesLog = (keylogs[k].datetime.getMinutes() <= 9 ? '0' : '') + (keylogs[k].datetime.getMinutes()) 
                                 const logDate = yearLog + '-' + monthLog + '-' + dayLog + ' ' + hoursLog + ':' + minutesLog
@@ -109,7 +109,7 @@
                             <% for (let s in screenshots ) { 
                                 const yearScreen = screenshots[s].createdAt.getFullYear()
                                 const monthScreen = (screenshots[s].createdAt.getMonth() <= 9 ? '0' : '') + (screenshots[s].createdAt.getMonth() + 1)
-                                const dayScreen = screenshots[s].createdAt.getDate()
+                                const dayScreen = (screenshots[s].createdAt.getDate() <= 9 ? '0' : '') + screenshots[s].createdAt.getDate()
                                 const hoursScreen = (screenshots[s].createdAt.getHours() <= 9 ? '0' : '') + (screenshots[s].createdAt.getHours())
                                 const minutesScreen = (screenshots[s].createdAt.getMinutes() <= 9 ? '0' : '') + (screenshots[s].createdAt.getMinutes()) 
                                 const screenDate = yearScreen + '-' + monthScreen + '-' + dayScreen + ' ' + hoursScreen + ':' + minutesScreen

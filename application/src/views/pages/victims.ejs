@@ -21,14 +21,14 @@
                     <% for (let c in clients ) { 
                         const yearUpdate = clients[c].updatedAt.getFullYear()
                         const monthUpdate = (clients[c].updatedAt.getMonth() <= 9 ? '0' : '') + (clients[c].updatedAt.getMonth() + 1)
-                        const dayUpdate = clients[c].updatedAt.getDate()
+                        const dayUpdate = (clients[c].updatedAt.getDate() <= 9 ? '0' : '') + clients[c].updatedAt.getDate()
                         const hoursUpdate = (clients[c].updatedAt.getHours() <= 9 ? '0' : '') + (clients[c].updatedAt.getHours())
                         const minutesUpdate = (clients[c].updatedAt.getMinutes() <= 9 ? '0' : '') + (clients[c].updatedAt.getMinutes()) 
                         const clientUpdateDate = yearUpdate + '-' + monthUpdate + '-' + dayUpdate + ' ' + hoursUpdate + ':' + minutesUpdate
 
                         const yearInfection = clients[c].createdAt.getFullYear()
                         const monthInfection = (clients[c].createdAt.getMonth() <= 9 ? '0' : '') + (clients[c].createdAt.getMonth() + 1)
-                        const dayInfection = clients[c].createdAt.getDate()
+                        const dayInfection = (clients[c].createdAt.getDate() <= 9 ? '0' : '') + clients[c].createdAt.getDate()
                         const hoursInfection = (clients[c].createdAt.getHours() <= 9 ? '0' : '') + (clients[c].createdAt.getHours())
                         const minutesInfection = (clients[c].createdAt.getMinutes() <= 9 ? '0' : '') + (clients[c].createdAt.getMinutes()) 
                         const clientInfectionDate = yearInfection + '-' + monthInfection + '-' + dayInfection + ' ' + hoursInfection + ':' + minutesInfection
