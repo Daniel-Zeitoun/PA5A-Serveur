@@ -26,12 +26,13 @@ const ipAddressDao = {
 
         return ip_address
     },
-    insertOne: async function ({ ipAddress, isPrivate, lastPing, clientId }) {
+    insertOne: async function ({ ipAddress, isPrivate, lastPing, country, clientId }) {
 
         const ip_address = await IP_Address.create({
             ipAddress: ipAddress,
             isPrivate: isPrivate,
             lastPing: lastPing,
+            country: country,
             clientId: clientId
         })
         return ip_address
@@ -62,6 +63,21 @@ const ipAddressDao = {
         })
 
         return ip_addresses
+    },
+    findLastPublicIPByClientId: async function (clientId) {
+
+        const ip_address = await IP_Address.findOne({
+            where: {
+                [Op.and]: [
+                    { isPrivate: false },
+                    { clientId: clientId }
+                ]
+            },
+            order: [
+                ['updatedAt', 'DESC']
+            ]
+        })
+        return ip_address
     }
 }
 

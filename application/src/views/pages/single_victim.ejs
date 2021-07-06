@@ -6,38 +6,52 @@
 
         <%
             const yearUpdate = single_client.updatedAt.getFullYear()
-            const monthUpdate = (single_client.updatedAt.getMonth() < 9 ? '0' : '') + (single_client.updatedAt.getMonth() + 1)
-            const dayUpdate = (single_client.updatedAt.getDate() < 9 ? '0' : '') + single_client.updatedAt.getDate()
-            const hoursUpdate = (single_client.updatedAt.getHours() < 9 ? '0' : '') + (single_client.updatedAt.getHours())
-            const minutesUpdate = (single_client.updatedAt.getMinutes() < 9 ? '0' : '') + (single_client.updatedAt.getMinutes()) 
+            const monthUpdate = (single_client.updatedAt.getMonth() <= 9 ? '0' : '') + (single_client.updatedAt.getMonth() + 1)
+            const dayUpdate = (single_client.updatedAt.getDate() <= 9 ? '0' : '') + single_client.updatedAt.getDate()
+            const hoursUpdate = (single_client.updatedAt.getHours() <= 9 ? '0' : '') + (single_client.updatedAt.getHours())
+            const minutesUpdate = (single_client.updatedAt.getMinutes() <= 9 ? '0' : '') + (single_client.updatedAt.getMinutes()) 
             const clientUpdateDate = yearUpdate + '-' + monthUpdate + '-' + dayUpdate + ' ' + hoursUpdate + ':' + minutesUpdate
 
             const yearInfection = single_client.createdAt.getFullYear()
-            const monthInfection = (single_client.createdAt.getMonth() < 9 ? '0' : '') + (single_client.createdAt.getMonth() + 1)
-            const dayInfection = (single_client.createdAt.getDate() < 9 ? '0' : '') + single_client.createdAt.getDate()
-            const hoursInfection = (single_client.createdAt.getHours() < 9 ? '0' : '') + (single_client.createdAt.getHours())
-            const minutesInfection = (single_client.createdAt.getMinutes() < 9 ? '0' : '') + (single_client.createdAt.getMinutes()) 
+            const monthInfection = (single_client.createdAt.getMonth() <= 9 ? '0' : '') + (single_client.createdAt.getMonth() + 1)
+            const dayInfection = (single_client.createdAt.getDate() <= 9 ? '0' : '') + single_client.createdAt.getDate()
+            const hoursInfection = (single_client.createdAt.getHours() <= 9 ? '0' : '') + (single_client.createdAt.getHours())
+            const minutesInfection = (single_client.createdAt.getMinutes() <= 9 ? '0' : '') + (single_client.createdAt.getMinutes()) 
             const clientInfectionDate = yearInfection + '-' + monthInfection + '-' + dayInfection + ' ' + hoursInfection + ':' + minutesInfection
         %>
 
         <div class="card">
             <div class="card-body">
-                <div class="row justify-content-center align-items-center">
-                    <div class="col-4">
-                        <img class="" src="/static/img/botnet_logo.png" alt="Flag Country">
+                <div class="row justify-content-around align-items-center">
+                    <div id="countryFlag" class="col-1">
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <div>
                             Computer Name : <%= single_client.computerName %>
                         </div>
                         <div>
-                            IP Address : 127.0.0.1 (France)
+                            IP Address : <%= ipAddress %>
                         </div>
                         <div>
                             Date Infection : <%= clientInfectionDate %>
                         </div>
                         <div>
                             Last Update : <%= clientUpdateDate %>
+                        </div>
+                    </div>
+                    
+                    <div class="col-3">
+                        <div>
+                            Country : <span id="country"></span>
+                        </div>
+                        <div>
+                            City / Zip Code : <span id="city"></span>
+                        </div>
+                        <div>
+                            Latitude / Longitude : <span id="latlong"></span>
+                        </div>
+                        <div>
+                            FAI : <span id="fai"></span>
                         </div>
                     </div>
                 </div>
@@ -147,5 +161,41 @@
         </div>
 
     </div>
+
+    <script>
+        $(document).ready(() => {
+            let ip = '<%= ipAddress %>'
+            let url = 'https://ip-api.io/json/' + ip
+            
+            if (ip !== '') {
+                
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    contentType: "application/json"
+                })
+                    .done((data) => {
+                        console.log("The AJAX request to ip-api.io is a success !")
+
+                        let flag = document.createElement('img')
+
+                        flag.src = data.flagUrl
+                        flag.className = 'img-fluid'
+                        flag.alt = 'Flag Country'
+
+                        $('#countryFlag').append(flag)
+                        
+                        $('#country').text(data.country_name + ' (' + data.country_code + ')')
+                        $('#city').text((data.city == '' ? '-' : data.city)  + ' (' + (data.zip_code == '' ? '-' : data.zip_code) + ')')
+                        $('#latlong').text(data.latitude + ' / ' + data.longitude)
+                        $('#fai').text(data.organisation)
+                    })
+                    .fail(() => {
+                        console.log("The AJAX request to ip-api.io failed ...")
+                        alert("An error occurred ...")
+                    })
+            }
+        })
+    </script>
 
 <%- include('../partials/footer'); %>

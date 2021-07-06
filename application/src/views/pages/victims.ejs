@@ -15,10 +15,11 @@
                         <th scope="col">IP Address</th>
                         <th scope="col">Date Infection</th>
                         <th scope="col">Last Update</th>
+                        <th scope="col">Status</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <% for (let c in clients ) { 
+                <tbody id="bots">
+                    <% for (let c in clients) { 
                         const yearUpdate = clients[c].updatedAt.getFullYear()
                         const monthUpdate = (clients[c].updatedAt.getMonth() <= 9 ? '0' : '') + (clients[c].updatedAt.getMonth() + 1)
                         const dayUpdate = (clients[c].updatedAt.getDate() <= 9 ? '0' : '') + clients[c].updatedAt.getDate()
@@ -32,15 +33,17 @@
                         const hoursInfection = (clients[c].createdAt.getHours() <= 9 ? '0' : '') + (clients[c].createdAt.getHours())
                         const minutesInfection = (clients[c].createdAt.getMinutes() <= 9 ? '0' : '') + (clients[c].createdAt.getMinutes()) 
                         const clientInfectionDate = yearInfection + '-' + monthInfection + '-' + dayInfection + ' ' + hoursInfection + ':' + minutesInfection
+                        
                     %>
-                        <tr data-href="/app/victims/<%= clients[c].uuid %>">
-                            <th scope="row"><%= clients[c].id %></th>
-                            <td>Country (Not Yet)</td>
-                            <td><%= clients[c].computerName %></td>
-                            <td><%= clients[c].uuid %></td>
-                            <td>IP Address (Not Yet)</td>
+                        <tr id="<%= clients[c].uuid %>" data-href="/app/victims/<%= clients[c].uuid %>">
+                            <th id="id" scope="row"><%= clients[c].id %></th>
+                            <td id="computerName"><%= clients[c].computerName %></td>
+                            <td id="country"><%= ip_addresses[c].country %></td>
+                            <td id="uuid"><%= clients[c].uuid %></td>
+                            <td id="ip"><%= ip_addresses[c].ipAddress %></td>
                             <td><%= clientInfectionDate %></td>
                             <td><%= clientUpdateDate %></td>
+                            <td id="status" class="badge badge-pill badge-danger">Unreachable</td>
                         </tr>
                     <% } %>
                 </tbody>
