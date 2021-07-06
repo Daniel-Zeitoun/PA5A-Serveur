@@ -25,7 +25,15 @@ input[type="submit"] {
 }
 
 #messages {
+    /*margin:0%;
+    position:fixed;
+    width: 96%;
+    overflow-y: scroll;
+    max-height: 100%;*/
+    background-color: black;
+    color: chartreuse;
     height: 80%;
+    line-height: 1em;
 }
 
 #commands-sender {

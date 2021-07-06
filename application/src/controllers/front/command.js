@@ -17,7 +17,8 @@ router.get('/shell/:uuid', async (req, res, next) => {
             res.redirect('/app/login')
         }
         else {
-            res.render('pages/reverse_shell', {uuid: req.params.uuid})
+            const client = await clientService.findOneByUuid(req.params.uuid)
+            res.render('pages/reverse_shell', {client: client})
         }
 
     } catch (e) { next(e) }

