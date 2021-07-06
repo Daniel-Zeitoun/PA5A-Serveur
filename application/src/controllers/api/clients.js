@@ -1,7 +1,6 @@
 'use strict'
 
 const express = require('express')
-const https = require('https')
 const router = express.Router()
 const clientService = require('../../services/clientService')
 const commandService = require('../../services/commandService')

@@ -9,7 +9,6 @@ const router = express.Router()
 const victims = require('./victims')
 const cmd = require('./command')
 
-
 router.use(escapingFunctions)
 
 // No matter the URL, if we are not connected, the login page is returned

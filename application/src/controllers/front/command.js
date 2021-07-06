@@ -5,7 +5,6 @@ const escapingFunctions = require('../middlewares/escaping')
 const router = express.Router()
 const clientService = require('../../services/clientService')
 
-
 router.get('/shell/:uuid', async (req, res, next) => {
     try {
         //const clients = await clientService.getAll()
@@ -18,7 +17,7 @@ router.get('/shell/:uuid', async (req, res, next) => {
         }
         else {
             const client = await clientService.findOneByUuid(req.params.uuid)
-            res.render('pages/reverse_shell', {client: client})
+            res.render('pages/reverse_shell', { client: client })
         }
 
     } catch (e) { next(e) }

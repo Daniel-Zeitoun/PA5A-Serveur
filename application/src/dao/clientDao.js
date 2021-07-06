@@ -51,7 +51,7 @@ const clientDao = {
                 ['id', 'ASC']
             ]
         })
-        
+
         return clients
     },
     getDataDashboard: async function () {
@@ -65,7 +65,7 @@ const clientDao = {
                 [Sequelize.fn('to_char', Sequelize.col('createdAt'), 'yyyy-mm-dd'), 'ASC']
             ]
         })
-        
+
         return clients
     }
 }
