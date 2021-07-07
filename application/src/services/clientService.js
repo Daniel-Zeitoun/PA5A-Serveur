@@ -54,14 +54,53 @@ const clientService = {
     getDataDashboard: async function () {
 
         const clients = await clientDao.getDataDashboard()
-/*
-        for (let c in clients) {
-            let date = clients[c].getDataValue('date')
-            date = date.getFullYear() + '-' + (date.getMonth() <= 9 ? '0' : '') + (date.getMonth() + 1) + '-' + date.getDate()
-            clients[c].setDataValue('date', date)
-        }
-*/
+        /*
+                for (let c in clients) {
+                    let date = clients[c].getDataValue('date')
+                    date = date.getFullYear() + '-' + (date.getMonth() <= 9 ? '0' : '') + (date.getMonth() + 1) + '-' + date.getDate()
+                    clients[c].setDataValue('date', date)
+                }
+        */
         return clients
+    },
+    getAllStatus: async function () {
+        const clients = await clientDao.getAll()
+
+        const datenow = Date.now()
+        let statusArray = new Array()
+
+        for await (const client of clients) {
+            const seconds = 2
+
+            if (client.updatedAt.getTime() >= datenow - seconds * 1000) {
+                statusArray.push({
+                    uuid: client.uuid,
+                    status: 'online'
+                })
+            } else {
+                statusArray.push({
+                    uuid: client.uuid,
+                    status: 'offline'
+                })
+            }
+        }
+
+        return statusArray
+    },
+    getStatus: async function (uuid) {
+
+        // Call the DAO to find if a user exists or not
+        const client = await clientDao.findOneByUuid(uuid)
+        const datenow = Date.now()
+        const seconds = 2
+
+        let status = null
+        if (client.updatedAt.getTime() >= datenow - seconds * 1000) {
+            status = 'online'
+        } else {
+            status = 'offline'
+        }
+        return status
     }
 }
 

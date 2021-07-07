@@ -2,7 +2,10 @@
     <%- include('../partials/navbar'); %>
 
     <div class="container-fluid">
-        <h3 class="text-center">UUID : <%= single_client.uuid %></h3>
+        <h3 class="text-center"><%= single_client.computerName %> (<%= single_client.uuid %>)
+            <span id="status" class="badge badge-pill badge-danger">Unreachable</span>
+        </h3>
+        
 
         <%
             const yearUpdate = single_client.updatedAt.getFullYear()
@@ -161,6 +164,35 @@
         </div>
 
     </div>
+
+    <script>
+        (function status() {
+            const uuid = window.location.pathname.split('/')[3]
+            const url = new URL(window.location.origin + '/api/clients/' + uuid + '/status')
+
+            $.ajax({
+                type: "GET",
+                url: url,
+            })
+            .done((s) => {
+                console.log("The AJAX request to get status is a success !")
+
+                if (s === 'online') {
+                    document.getElementById("status").innerText = "Online"
+                    document.getElementById("status").className = "badge badge-pill badge-success"
+                }
+                else {
+                    document.getElementById("status").innerText = "Offline"
+                    document.getElementById("status").className = "badge badge-pill badge-danger"
+                }
+            })
+            .fail(() => {
+                console.log("The AJAX request to get status failed ...")
+                //alert("An error occurred ...")
+            })
+            setTimeout(status, 1000)
+        })()
+    </script>
 
     <script>
         $(document).ready(() => {

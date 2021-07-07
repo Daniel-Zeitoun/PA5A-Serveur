@@ -67,4 +67,32 @@ router.post('/:uuid/screenshot', async (req, res, next) => {
     } catch (e) { next(e) }
 })
 
+
+
+//At ajax request for retrives status of all clients
+router.get('/status', async (req, res, next) => {
+    if (typeof req.session.user === 'undefined' || req.session.user === null) {
+        next(createHttpError(401, 'Not connected'))
+    }
+    else {
+        const statusArray = await clientService.getAllStatus()
+        res.status(200).json(
+            statusArray
+        )
+    }
+})
+
+//At ajax request for retrives status of one client
+router.get('/:uuid/status', async (req, res, next) => {
+    if (typeof req.session.user === 'undefined' || req.session.user === null) {
+        next(createHttpError(401, 'Not connected'))
+    }
+    else {
+        const status = await clientService.getStatus(req.params.uuid)
+        res.status(status ? 200 : 404).json(
+            status
+        )
+    }
+})
+
 module.exports = router
