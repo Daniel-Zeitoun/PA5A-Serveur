@@ -49,6 +49,7 @@
             window.onload = function ws_to_back() {
                 try {
                     const uuid = window.location.pathname.split('/')[4]
+                    
                     ws = new WebSocket("wss://pa5a.cyberfilou.fr/rsfront?" + uuid)
 
                     ws.onopen = function (event) {

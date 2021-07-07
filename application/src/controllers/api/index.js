@@ -25,7 +25,7 @@ router.post('/dashboard', async (req, res, next) => {
         const keylogs = await keylogsService.getDataDashboard()
         const screenshots = await screenshotService.getDataDashboard()
 
-        res.json({ 
+        res.json({
             clients: clients,
             keylogs: keylogs,
             screenshots: screenshots

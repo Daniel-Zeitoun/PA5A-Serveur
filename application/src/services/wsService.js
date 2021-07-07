@@ -10,7 +10,6 @@ const charsetDetector = require('node-icu-charset-detector')
 const iconvlite = require('iconv-lite');
 */
 
-
 /*
 function getFileContentsInUTF8(file_path) {
   var content = fs.readFileSync(file_path);
@@ -25,16 +24,16 @@ let rsArray = new Array()
 const wsService = {
     wsUpgrade: function () {
         httpsServer.on('upgrade', (req, socket, head) => {
-            
+
             switch (url.parse(req.url).pathname) {
                 case '/rsfront':
                     wsServerFront.handleUpgrade(req, socket, head, (ws) => {
-                        wsServerFront.emit('connection', ws, req);
+                        wsServerFront.emit('connection', ws, req)
                     })
                     break
                 case '/rsclient':
                     wsServerClient.handleUpgrade(req, socket, head, (ws) => {
-                        wsServerClient.emit('connection', ws, req);
+                        wsServerClient.emit('connection', ws, req)
                     })
                     break
                 default:
@@ -44,12 +43,11 @@ const wsService = {
         })
     },
 
-
     wsFront: function () {
         // At front connection on websocket
         wsServerFront.on('connection', (ws, req) => {
 
-            const uuid = url.parse(req.url).query;
+            const uuid = url.parse(req.url).query
             console.log(`Connection received from front for uuid : ${uuid}`)
 
             // Create entry in rsArray
@@ -85,7 +83,6 @@ const wsService = {
             })
         })
     },
-
 
     wsClient: () => {
         // At client connection on websocket
