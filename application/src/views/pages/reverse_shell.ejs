@@ -29,7 +29,7 @@
     <!-- Page Content -->
     <div id="content">
         <div class="text-center mt-2">
-            <h2>Revershell : <%= client.computerName %> (<%= client.uuid %>)</h2>
+            <h2>Reverse Shell : <%= client.computerName %> (<%= client.uuid %>)</h2>
         </div>
 
         <pre id="messages" class="mt-5 mb-2 overflow-auto">
@@ -43,14 +43,37 @@
         </div>
 
         <script type="text/javascript">
+            $(document).ready(function ($) {
+                const command = JSON.stringify({ "name": "REVERSE-SHELL" })
+                const uuid = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1]
+                const url = new URL(window.location.origin + '/api/clients/' + uuid + '/commands')
+
+                $.ajax({
+                    type: "POST",
+                    data: command,
+                    url: url,
+                    contentType: "application/json"
+                })
+                    .done((data) => {
+                        console.log("The AJAX request to open shell is a success !")
+                    })
+                    .fail((error) => {
+                        console.log("The AJAX request to open shell failed ...")
+                        alert("An error occurred ...")
+                        console.log(error)
+                    })
+                })
+        </script>
+
+        <script type="text/javascript">
 
             let ws = null
 
             window.onload = function ws_to_back() {
                 try {
-                    const uuid = window.location.pathname.split('/')[4]
+                    const uuid = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1]
                     
-                    ws = new WebSocket("wss://pa5a.cyberfilou.fr/rsfront?" + uuid)
+                    ws = new WebSocket("wss://" + document.location.hostname + "/rsfront?" + uuid)
 
                     ws.onopen = function (event) {
                         console.log("[OPEN] Connection established")
