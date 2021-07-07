@@ -1,6 +1,6 @@
 'use strict'
 
-const { httpServer, httpsServer } = require('../constants/express')
+const { httpsServer } = require('../constants/express')
 const sequelize = require('../constants/sequelize')
 const wsService = require('../services/wsService')
 
@@ -9,9 +9,9 @@ const appLoader = async () => {
   const httpsPort = 443
 
   try {
-    httpServer.listen(httpPort, () => {
+    /*httpServer.listen(httpPort, () => {
       console.log(`HTTP Server running on port ${httpPort}`)
-    })
+    })*/
 
     httpsServer.listen(httpsPort, () => {
       console.log(`HTTPS Server running on port ${httpsPort}`)

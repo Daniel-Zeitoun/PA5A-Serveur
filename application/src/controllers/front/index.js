@@ -4,6 +4,7 @@ const express = require('express')
 const escapingFunctions = require('../middlewares/escaping')
 const createHttpError = require('http-errors')
 const User = require('../../models/User')
+const path = require('path')
 
 const router = express.Router()
 const victims = require('./victims')
@@ -58,5 +59,8 @@ router.get('/about', (req, res, next) => {
     res.render('pages/about')
 })
 
+router.get('/hackforums', (req,res, next) => {
+    res.sendFile('pages/kevin.html', { root: path.join(__dirname, '../../views') })
+})
 
 module.exports = router

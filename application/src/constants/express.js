@@ -15,7 +15,6 @@ const deserializeUser = require('../controllers/middlewares/deserializeUser')
 const WebSocket = require('ws')
 const url = require('url')
 
-
 const app = express()
 
 const rootDir = path.resolve(__dirname)
@@ -23,7 +22,7 @@ const rootDir = path.resolve(__dirname)
 const key = fs.readFileSync('/certs/server.key')
 const cert = fs.readFileSync('/certs/server.cert')
 
-const httpServer = http.createServer(app);
+//const httpServer = http.createServer(app);
 const httpsServer = https.createServer({
     key: key,
     cert: cert
@@ -48,7 +47,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     store,
-    secret: 'this should be in .env and kept secret'
+    secret: 'this should be in .env and kept secret',
+    httpOnly: true
 }))
 app.use(deserializeUser)
 app.use(bodyParser.json({ limit: '100mb' }))
@@ -67,6 +67,10 @@ for (const [key, value] of Object.entries({
     '/static': express.static(path.join(rootDir, '../static'))
 })) app.use(key, value)
 
+/*httpServer.get('*', function (req, res) {
+    res.redirect('https://' + req.headers.host + req.url);
+})*/
+
 app.all('*', (req, res, next) => res.redirect('/app'))
 
 
@@ -77,7 +81,7 @@ const wsServerFront = new WebSocket.Server({ noServer: true });
 const wsServerClient = new WebSocket.Server({ noServer: true });
 
 module.exports = {
-    httpServer,
+    //httpServer,
     httpsServer,
     wsServerFront,
     wsServerClient
