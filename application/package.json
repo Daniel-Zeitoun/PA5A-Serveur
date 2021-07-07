@@ -7,17 +7,13 @@
     "connect-session-sequelize": "^7.1.1",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "express-session": "^1.17.1",
-    "express-ws": "^5.0.2",
+    "express-session": "^1.17.2",
     "http-errors": "^1.8.0",
-    "nodemon": "^2.0.7",
-    "npm": "^7.19.1",
+    "nodemon": "^2.0.9",
     "pg": "^8.6.0",
-    "pg-hstore": "^2.3.3",
-    "run": "^1.4.0",
-    "sequelize": "^6.6.2",
-    "watch": "^1.0.2",
-    "ws": "^7.4.6"
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.6.5",
+    "ws": "^7.5.2"
   },
   "devDependencies": {},
   "scripts": {

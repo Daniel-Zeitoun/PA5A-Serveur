@@ -4,19 +4,19 @@ const userService = require('../../services/userService')
 const User = require('../../models/User')
 
 module.exports = async (req, res, next) => {
-    
+
     try {
-        
-        if (typeof req.session.user !== 'number'){
+
+        if (typeof req.session.user !== 'number') {
             next()
             return
         }
-        
+
         const user = await userService.findUserById(req.session.user)
 
-        if (!(user instanceof User)){
+        if (!(user instanceof User)) {
             req.session.regenerate(err => {
-                if (err){
+                if (err) {
                     next(err)
                     return
                 }
@@ -29,5 +29,5 @@ module.exports = async (req, res, next) => {
 
         next()
 
-    } catch (e){ next(e) }
+    } catch (e) { next(e) }
 }

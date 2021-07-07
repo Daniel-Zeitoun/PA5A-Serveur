@@ -6,14 +6,14 @@ module.exports = (req, res, next) => {
 
         if (typeof value !== 'string')
             throw new Error('Value to encode must be a string')
-        
+
         let output = ''
 
         const isWhitelist = char => char.charCodeAt(0) >= 256 || /^[a-zA-Z0-9]$/.test(char)
 
-        for (const c of value){
-            
-            if (isWhitelist(c)){
+        for (const c of value) {
+
+            if (isWhitelist(c)) {
                 output += c
                 continue
             }
@@ -28,7 +28,7 @@ module.exports = (req, res, next) => {
 
         return output
     }
-    
+
     res.locals.encodeForHtml = (value) => encode(value, hex => `&#x${hex};`)
     res.locals.encodeForJavascript = (value) => encode(value, hex => `\\x${hex}`)
     res.locals.encodeForUrlParameter = (value) => encode(value, hex => `%${hex}`)

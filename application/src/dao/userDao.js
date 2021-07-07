@@ -7,41 +7,31 @@ const userDao = {
 
     findOneById: async function (id) {
 
-        const sql = `SELECT * FROM "${User.tableName}" WHERE id = '${id}'`
-
-        const user = await User.sequelize.query(sql, {
-            type: QueryTypes.SELECT,
-            plain: true,
-            mapToModel: true,
-            model: User
+        const user = await User.findOne({
+            where: {
+                id: id
+            }
         })
-
+        
         return user
     },
-
     findOneByUsername: async function (username) {
 
-        const sql = `SELECT * FROM "${User.tableName}" WHERE username = '${username}'`
-        
-        const user = await User.sequelize.query(sql, {
-            type: QueryTypes.SELECT,
-            plain: true,
-            mapToModel: true,
-            model: User
+        const user = await User.findOne({
+            where: {
+                username: username
+            }
         })
-        
         return user
     },
-/*
-    insertOne: async function ({ id, username, password }) {
+    insertOne: async function ({ username, password }) {
 
-        const sql = `INSERT INTO "${User.tableName}" (username, password, createdAt, updatedAt) ` +
-            `VALUES ('${username}', '${password}', now(), now())`
-
-        await User.sequelize.query(sql, {
-            type: QueryTypes.INSERT
+        const user = await User.create({
+            username: username,
+            password: password
         })
-    },*/
+        return user
+    }
 }
 
 module.exports = userDao

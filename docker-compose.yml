@@ -44,7 +44,9 @@ services:
       - ./application:/app
       - ./screenshots:/app/src/static/img/screenshots
       - ./certs:/certs
-    command: sh -c "npm install && npm run watch "
+      # Package à installer
+      # nodemon express express-session http-errors ejs ws sequelize connect-session-sequelize pg pg-hstore
+    command: sh -c "npm install && npm run watch"
     ports:
       - "80:80"
       - "443:443"
