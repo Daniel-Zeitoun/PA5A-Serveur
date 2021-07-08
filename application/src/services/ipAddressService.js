@@ -21,26 +21,36 @@ const ipAddressService = {
         return { isNewIP: false, ip_address: await this.update({ ip, clientId }) }
     },
     create: async function ({ ip, clientId }) {
-        let country
         
-        https.get('https://ip-api.io/json/' + ip, (resp) => {
-            let data = ''
-            
-            resp.on('data', (chunk) => {
-                data += chunk
+        const reqCountry = function(ipAddress) {
+            return new Promise((resolve, reject) => {
+                https.get('https://ip-api.io/json/' + ipAddress, (resp) => {
+                    let data = ''
+                    
+                    resp.on('data', (chunk) => {
+                        data += chunk
+                    })
+                    resp.on('end', () => {
+                        try {
+                            data = JSON.parse(data)
+                        } catch (e) {
+                            reject(e)
+                        }
+                        resolve(data)
+                    })
+                }).on("error", (err) => {
+                    console.log("Error: " + err.message)
+                    reject(err)
+                })
             })
-            resp.on('end', () => {
-                country = JSON.parse(data).country_name
-            })
-        }).on("error", (err) => {
-            console.log("Error: " + err.message)
-        })
+        }
+        const ipInfos = await reqCountry(ip)
 
         const ip_address = await ipAddressDao.insertOne({
             ipAddress: ip,
             isPrivate: false,
             lastPing: Date.now(),
-            country: country,
+            country: ipInfos.country_name,
             clientId: clientId
         })
         return ip_address

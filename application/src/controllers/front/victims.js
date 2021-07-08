@@ -34,22 +34,40 @@ router.get('/:uuid', async (req, res, next) => {
         const screenshots = await screenshotService.findAllByClientId(single_client.id)
         const ip = await ipAddressService.findLastPublicIPByClientId(single_client.id)
         /*
-        https.get('https://ip-api.io/json/' + ip.ipAddress, (resp) => {
-                let data = ''
-    
-                // A chunk of data has been received.
-                resp.on('data', (chunk) => {
-                    data += chunk
-                })
-                // The whole response has been received. Print out the result.
-                resp.on('end', () => {
-                    console.log(JSON.parse(data))
-                })
-            }).on("error", (err) => {
-                console.log("Error: " + err.message)
+        const reqCountry = function(ipAddress) {
+            return new Promise( (resolve, reject) => {
+                let url = new URL('https://ip-api.io/json/' + ipAddress)
+                let params = {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json0"
+                    }
+                }
+                
+                https.request(url, params, (resp) => {
+                    let data = ''
+                    
+                    // A chunk of data has been received.
+                    resp.on('data', (chunk) => {
+                        data += chunk
+                    })
+                    // The whole response has been received. Print out the result.
+                    resp.on('end', () => {
+                        try {
+                            data = JSON.parse(data)
+                        } catch (e) {
+                            reject(e)
+                        }
+                        resolve(data)
+                    })
+                }).on("error", (err) => {
+                    console.log("Error: " + err.message)
+                    reject(err)
+                }).end()
             })
+        }
         */
-       
+
         res.render('pages/single_victim', 
         {
             single_client: single_client,
