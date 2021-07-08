@@ -7,10 +7,10 @@
         
         <% 
             const year = connectedUser.lastLogin.getFullYear()
-            const month = (connectedUser.lastLogin.getMonth() < 9 ? '0' : '') + (connectedUser.lastLogin.getMonth() + 1)
-            const day = connectedUser.lastLogin.getDate()
-            const hours = (connectedUser.lastLogin.getHours() < 9 ? '0' : '') + (connectedUser.lastLogin.getHours())
-            const minutes = (connectedUser.lastLogin.getMinutes() < 9 ? '0' : '') + (connectedUser.lastLogin.getMinutes()) 
+            const month = (connectedUser.lastLogin.getMonth() <= 9 ? '0' : '') + (connectedUser.lastLogin.getMonth() + 1)
+            const day = (connectedUser.lastLogin.getDate() <= 9 ? '0' : '') + connectedUser.lastLogin.getDate()
+            const hours = (connectedUser.lastLogin.getHours() <= 9 ? '0' : '') + (connectedUser.lastLogin.getHours())
+            const minutes = (connectedUser.lastLogin.getMinutes() <= 9 ? '0' : '') + (connectedUser.lastLogin.getMinutes()) 
             const lastLogin = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes
         %>
         <div class="text-center">
